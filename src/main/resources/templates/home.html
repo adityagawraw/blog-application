@@ -14,26 +14,11 @@
     </div>
 </header>
 <section>
-    <div class="blog">
-        <h1 class="title">Blog Title</h1>
-        <span>Aditya Gawraw, </span>
-        <span>18/10/20</span><br>
-        <p class="excerpt">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure quas sint ipsum, quam porro
-            eaque. </p>
-    </div>
-    <div class="blog">
-        <h1 class="title">Blog Title</h1>
-        <span>Aditya Gawraw, </span>
-        <span>18/10/20</span><br>
-        <p class="excerpt">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure quas sint ipsum, quam porro
-            eaque. </p>
-    </div>
-    <div class="blog">
-        <h1 class="title">Blog Title</h1>
-        <span>Aditya Gawraw, </span>
-        <span>18/10/20</span><br>
-        <p class="excerpt">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure quas sint ipsum, quam porro
-            eaque. </p>
+    <div class="blog" th:each ="post:${posts}">
+        <h1 class="title" th:text = "${post.title}"></h1>
+        <span th:text = "${post.author}"> </span>
+        <span th:text = "${post.published_at}"></span><br>
+        <p class="excerpt" th:text = "${post.excerpt}"></p>
     </div>
 </section>
 <footer>

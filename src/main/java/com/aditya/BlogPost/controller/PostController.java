@@ -23,6 +23,7 @@ public class PostController {
     @RequestMapping("/")
     public String getHome(Model model){
         model.addAttribute("posts", postService.getPosts());
+        System.out.println(postService.getPosts().size());
         return  "home";
     }
 
