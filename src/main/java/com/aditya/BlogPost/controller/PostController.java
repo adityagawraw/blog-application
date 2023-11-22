@@ -8,7 +8,7 @@ public class PostController {
 
 @RequestMapping("/")
 public String getHomePage(){
-    return "home";
+    return "writeBlog";
 }
 
 }
