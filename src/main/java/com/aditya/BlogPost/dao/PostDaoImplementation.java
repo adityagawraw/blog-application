@@ -29,4 +29,10 @@ public class PostDaoImplementation implements  PostDao{
         List<Post> posts = query.getResultList();
         return posts;
     }
+
+    @Override
+    @Transactional
+    public Post findById(String id) {
+        return entityManager.find(Post.class, Integer.parseInt(id));
+    }
 }

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Blog</title>
+</head>
+<body>
+<link rel="stylesheet" th:href="@{/css/blog.css}">
+
+<header>
+  <h4>My Blog Application</h4>
+  <div><a href="">Login</a></div>
+</header>
+<section>
+  <h1 id="title" th:text="${post.title}"></h1>
+  <div id="blogInfo" >
+    <span th:text="${post.author}"></span>
+    <span th:text="${post.title}"></span>
+  </div>
+  <p id="blogContent" th:text="${post.Content}"></p>
+</section>
+</body>
+</html>
