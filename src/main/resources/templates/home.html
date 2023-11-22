@@ -1,10 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
 </head>
 <body>
-
+<link rel="stylesheet" th:href="@{/css/home.css}">
+<header>
+    <h1>My Blog Application</h1>
+    <div>
+        <input id = "search" type="text" placeholder="Search">
+        <a href="">Login</a>
+    </div>
+</header>
+<section>
+    <div class="blog">
+        <h1 class="title">Blog Title</h1>
+        <span>Aditya Gawraw, </span>
+        <span>18/10/20</span><br>
+        <p class="excerpt">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure quas sint ipsum, quam porro
+            eaque. </p>
+    </div>
+    <div class="blog">
+        <h1 class="title">Blog Title</h1>
+        <span>Aditya Gawraw, </span>
+        <span>18/10/20</span><br>
+        <p class="excerpt">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure quas sint ipsum, quam porro
+            eaque. </p>
+    </div>
+    <div class="blog">
+        <h1 class="title">Blog Title</h1>
+        <span>Aditya Gawraw, </span>
+        <span>18/10/20</span><br>
+        <p class="excerpt">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure quas sint ipsum, quam porro
+            eaque. </p>
+    </div>
+</section>
+<footer>
+    <p> < Previous </p>
+    <p> Next > </p>
+</footer>
 </body>
 </html>
