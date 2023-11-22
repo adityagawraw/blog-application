@@ -2,6 +2,10 @@ package com.aditya.BlogPost.dao;
 
 import com.aditya.BlogPost.entity.Post;
 
+import java.util.List;
+
 public interface PostDao {
     public void save(Post post);
+
+    public List<Post> findAllPosts();
 }

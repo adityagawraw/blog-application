@@ -20,7 +20,7 @@ public class Post {
     @Column(name = "published_at")
     private  String published_at;
     @Column(name = "is_published")
-    private  String is_published;
+    private  boolean is_published;
     @Column(name = "created_at")
     private  String created_at;
     @Column(name = "updated_at")
@@ -66,11 +66,11 @@ public class Post {
         this.published_at = published_at;
     }
 
-    public String getIs_published() {
+    public boolean isIs_published() {
         return is_published;
     }
 
-    public void setIs_published(String is_published) {
+    public void setIs_published(boolean is_published) {
         this.is_published = is_published;
     }
 
@@ -91,7 +91,7 @@ public class Post {
     }
 
     public Post(String title, String excerpt, String content, String author, String published_at,
-                String is_published, String created_at, String updated_at) {
+                boolean is_published, String created_at, String updated_at) {
         this.title = title;
         this.excerpt = excerpt;
         this.content = content;

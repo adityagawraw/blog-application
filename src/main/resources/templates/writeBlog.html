@@ -7,10 +7,10 @@
 <body>
 <link rel="stylesheet" th:href="@{/css/writeBlog.css}">
 <h1>New/Edit Post</h1>
-<form action="">
-    <input type="text" placeholder="Title">
-    <input type="text" placeholder="Tags">
-    <textarea placeholder="Write your blog..." rows="10"></textarea>
+<form th:action="@{/publish}" modelAttribute = "post" th:object="${post}" method="post">
+    <input type="text" placeholder="Title" th:name ="title" th:field ="*{title}">
+    <input type="text" placeholder="Tags" th:name ="tags" th:field ="*{tags}">
+    <textarea placeholder="Write your blog..." rows="10" th:name ="blogContent" th:field ="*{blogContent}"></textarea>
     <div>
         <button>Publish</button>
     </div>
