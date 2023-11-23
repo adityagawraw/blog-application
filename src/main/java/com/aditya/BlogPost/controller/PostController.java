@@ -1,11 +1,9 @@
 package com.aditya.BlogPost.controller;
 
 import com.aditya.BlogPost.dao.PostDao;
-import com.aditya.BlogPost.dao.PostDaoImplementation;
 import com.aditya.BlogPost.entity.Post;
 import com.aditya.BlogPost.model.PostModel;
 import com.aditya.BlogPost.service.PostService;
-import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,19 +24,32 @@ public class PostController {
     @RequestMapping("/")
     public String getHome(Model model) {
         model.addAttribute("posts", postService.getPosts());
-//        System.out.println(postService.getPosts());
 
         return "home";
     }
 
     @RequestMapping(value = "/post", method = RequestMethod.POST)
     public String getPost(@RequestParam("postId") String id, Model model) {
-        System.out.println("post id: "+id);
         model.addAttribute("post", postDao.findById(id));
-
 
         return "post";
     }
+    @RequestMapping(value = "/editPost")
+    public String editPostPage(@RequestParam(value = "postId") String id, Model model){
+        model.addAttribute("post", postDao.findById(id));
+
+        return "editPost";
+    }
+
+    @RequestMapping(value = "/updatePost")
+    public  String processUpdate(@ModelAttribute("post") Post post,Model model){
+        System.out.println("send to update: "+ post);
+        Post updatedPost = postService.updatePostById(String.valueOf(post.getId()), post);
+        model.addAttribute("post", updatedPost);
+
+        return "redirect:/post";
+    }
+
     @RequestMapping("/newpost")
     public String getHomePage(Model model) {
         model.addAttribute("post", new PostModel());

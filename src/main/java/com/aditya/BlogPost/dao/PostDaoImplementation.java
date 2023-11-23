@@ -6,6 +6,8 @@ import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
+import javax.xml.crypto.Data;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -13,7 +15,6 @@ public class PostDaoImplementation implements  PostDao{
     private EntityManager entityManager;
     public PostDaoImplementation(EntityManager entityManager) {
         this.entityManager = entityManager;
-        System.out.println("postdao created");
     }
 
     @Override
@@ -34,5 +35,16 @@ public class PostDaoImplementation implements  PostDao{
     @Transactional
     public Post findById(String id) {
         return entityManager.find(Post.class, Integer.parseInt(id));
+    }
+
+    @Override
+    public void updateById(int id, String title, String content) {
+    Post post = entityManager.find(Post.class, id);
+
+    post.setTitle(title);
+    post.setContent(content);
+    post.setUpdated_at(String.valueOf(new Date()));
+
+    entityManager.merge(post);
     }
 }

@@ -35,4 +35,10 @@ public class PostService {
         return  posts;
     }
 
+    public Post updatePostById(String postId, Post post){
+        postDao.updateById(Integer.parseInt(postId), post.getTitle(), post.getContent());
+
+        return  postDao.findById(postId);
+    }
+
 }

@@ -18,6 +18,10 @@
     <span th:text="${post.title}"></span>
   </div>
   <p id="blogContent" th:text="${post.Content}"></p>
+    <form th:action="@{/editPost}">
+        <input  type="hidden"  name="postId" th:value="${post.id}">
+        <button type="submit">Read More</button>
+    </form>
 </section>
 </body>
 </html>

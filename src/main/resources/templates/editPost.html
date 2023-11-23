@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<link rel="stylesheet" th:href="@{/css/writeBlog.css}">
+<h1>New/Edit Post</h1>
+<form th:action="@{/updatePost}" modelAttribute = "post" th:object="${post}" method="post">
+    <input type="text" placeholder="Title" th:name ="title" th:field ="*{title}">
+<!--    <input type="text" placeholder="Tags" th:name ="tags" th:field ="*{tags}">-->
+    <textarea placeholder="Write your blog..." rows="10" th:name ="blogContent" th:field ="*{content}"></textarea>
+    <input type="hidden"  th:value="${post.id}">
+    <div>
+        <button>Publish</button>
+    </div>
+</form>
+</body>
+</html>
