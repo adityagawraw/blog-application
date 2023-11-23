@@ -8,24 +8,52 @@
 <link rel="stylesheet" th:href="@{/css/blog.css}">
 
 <header>
-  <h4>My Blog Application</h4>
-  <div><a href="">Login</a></div>
+    <h4>My Blog Application</h4>
+    <div><a href="">Login</a></div>
 </header>
 <section>
-  <h1 id="title" th:text="${post.title}"></h1>
-  <div id="blogInfo" >
-    <span th:text="${post.author}"></span>
-    <span th:text="${post.title}"></span>
-  </div>
-  <p id="blogContent" th:text="${post.Content}"></p>
-    <form th:action="@{/editPost}">
-        <input  type="hidden"  name="postId" th:value="${post.id}">
-        <button type="submit">Edit Post</button>
-    </form>
-    <form th:action="@{/deletePost}">
-        <input  type="hidden"  name="postId" th:value="${post.id}">
-        <button type="submit">Delete Post</button>
-    </form>
+    <h1 id="title" th:text="${post.title}"></h1>
+    <div id="blogInfo">
+        <span th:text="${post.author}"></span>
+        <span th:text="${post.title}"></span>
+    </div>
+    <p id="blogContent" th:text="${post.Content}"></p>
+    <div id="postOptions">
+        <form th:action="@{/editPost}">
+            <input type="hidden" name="postId" th:value="${post.id}">
+            <button type="submit">Edit Post</button>
+        </form>
+        <form th:action="@{/deletePost}">
+            <input type="hidden" name="postId" th:value="${post.id}">
+            <button type="submit">Delete Post</button>
+        </form>
+    </div>
+    <div id="addComment">
+        <h3>Add Comment</h3>
+        <form>
+            <span>Name: </span> <input><br>
+            <span>Email: </span> <input><br>
+            <p>Comment: </p> <textarea rows="10"></textarea>
+        </form>
+    </div>
+    <div id="comment-section">
+        <h3>Comments</h3>
+        <div class="comment">
+            <span>Name</span>,
+            <span>Date</span> <br>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium, a fuga. Provident.</p>
+            <div class="comment-action">
+                <form action="">
+                    <input type="hidden">
+                    <button>Update</button>
+                </form>
+                <form action="">
+                    <input type="hidden">
+                    <button>Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </section>
 </body>
 </html>

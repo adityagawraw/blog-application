@@ -2,6 +2,9 @@ package com.aditya.BlogPost.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "posts")
 public class Post {
@@ -16,23 +19,43 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private  int id;
+    private int id;
     @Column(name = "title")
-    private  String title;
-    @Column(name = "excerpt")
-    private  String excerpt;
-    @Column(name = "content")
-    private  String content;
+    private String title;
+    @Column(name = "excerpt", length = 400)
+    private String excerpt;
+    @Column(name = "content", length = 2000)
+    private String content;
     @Column(name = "author")
-    private  String author;
+    private String author;
     @Column(name = "published_at")
-    private  String published_at;
+    private String published_at;
     @Column(name = "is_published")
-    private  boolean is_published;
+    private boolean is_published;
     @Column(name = "created_at")
-    private  String created_at;
+    private String created_at;
     @Column(name = "updated_at")
-    private  String updated_at;
+    private String updated_at;
+
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    List<Comment> commentList;
+
+    public List<Comment> getCommentList() {
+        return commentList;
+    }
+
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
+    }
+
+    public void addComment(Comment comment){
+      if(commentList.size() == 0){
+          commentList = new ArrayList<>();
+      }
+      commentList.add(comment);
+
+      comment.setPost(this);
+    }
 
     public String getTitle() {
         return title;

@@ -30,9 +30,55 @@ form{
 display:flex;
 justify-content:center;
 }
+#postOptions{
+display: flex;
+}
 button {
     padding: 5px 10px 5px 10px;
     border:2px black solid;
     background-color: white;
     font-size: large;
+}
+#addComment{
+    border: 1px solid black;
+    width: 500px;
+    padding: 10px 5px 10px 5px;
+    margin: 15px;
+}
+h3{
+    margin: 0px;
+}
+#addComment input{
+    padding: 2px;
+    margin: 3px;
+}
+#addComment textarea{
+    width:300px;
+    padding: 2px;
+    margin: 3px;
+}
+#addComment p{
+    margin: 0px;
+}
+#comment-section{
+margin: 15px;
+border: black solid 1px;
+padding: 5px;
+}
+.comment{
+    border: 1px black solid;
+    margin-top:4px ;
+    padding: 4px;
+}
+.comment p{
+    margin: 2px;
+}
+.comment-action{
+    display: flex;
+    padding: 2px;
+}
+.comment-action button{
+    padding: 2px 5px 2px 5px;
+     border: 1px solid black;
+     margin: 2px;
 }
