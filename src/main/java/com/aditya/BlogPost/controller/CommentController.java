@@ -20,7 +20,15 @@ public class CommentController {
 
     @RequestMapping(value = "/addComment", method = RequestMethod.POST)
     public String addComment(@ModelAttribute("comment") CommentModel comment){
-commentService.addComment(comment);
-        return "redirect:/";
+        commentService.addComment(comment);
+
+        return "redirect:/post?postId="+comment.getPostId();
     }
+    @RequestMapping(value = "/deleteComment", method = RequestMethod.POST)
+    public String deleteComment(@RequestParam("commentId") String commentId, @RequestParam("postId") String postId){
+        commentService.deleteComment(commentId);
+
+        return "redirect:/post?postId="+postId;
+    }
+
 }

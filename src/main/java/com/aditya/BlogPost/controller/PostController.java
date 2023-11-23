@@ -4,6 +4,7 @@ import com.aditya.BlogPost.dao.PostDao;
 import com.aditya.BlogPost.entity.Post;
 import com.aditya.BlogPost.model.CommentModel;
 import com.aditya.BlogPost.model.PostModel;
+import com.aditya.BlogPost.service.CommentService;
 import com.aditya.BlogPost.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,10 +18,16 @@ import java.util.List;
 
 @Controller
 public class PostController {
-    @Autowired
+    private CommentService commentService;
     private PostService postService;
-    @Autowired
     private PostDao postDao;
+
+    @Autowired
+    public PostController(CommentService commentService, PostService postService, PostDao postDao) {
+        this.commentService = commentService;
+        this.postService = postService;
+        this.postDao = postDao;
+    }
 
     @RequestMapping("/")
     public String getHome(Model model) {
@@ -31,8 +38,10 @@ public class PostController {
 
     @RequestMapping(value = "/post", method = RequestMethod.GET)
     public String getPost(@RequestParam("postId") String id, Model model) {
-        model.addAttribute("post", postDao.findById(id));
+        Post post =  postDao.findById(id);
+        model.addAttribute("post", post);
         model.addAttribute("comment", new CommentModel());
+        model.addAttribute("comments", post.getCommentList());
 
         return "post";
     }

@@ -37,7 +37,7 @@ public class Post {
     @Column(name = "updated_at")
     private String updated_at;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "post")
     List<Comment> commentList;
 
     public List<Comment> getCommentList() {
