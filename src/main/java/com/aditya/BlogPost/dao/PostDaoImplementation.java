@@ -38,9 +38,10 @@ public class PostDaoImplementation implements  PostDao{
     }
 
     @Override
+    @Transactional
     public void updateById(int id, String title, String content) {
     Post post = entityManager.find(Post.class, id);
-
+        System.out.println(post);
     post.setTitle(title);
     post.setContent(content);
     post.setUpdated_at(String.valueOf(new Date()));

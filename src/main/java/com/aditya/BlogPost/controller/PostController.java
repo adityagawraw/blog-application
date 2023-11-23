@@ -28,26 +28,25 @@ public class PostController {
         return "home";
     }
 
-    @RequestMapping(value = "/post", method = RequestMethod.POST)
+    @RequestMapping(value = "/post", method = RequestMethod.GET)
     public String getPost(@RequestParam("postId") String id, Model model) {
         model.addAttribute("post", postDao.findById(id));
 
         return "post";
     }
+
     @RequestMapping(value = "/editPost")
-    public String editPostPage(@RequestParam(value = "postId") String id, Model model){
+    public String editPostPage(@RequestParam(value = "postId") String id, Model model) {
         model.addAttribute("post", postDao.findById(id));
 
         return "editPost";
     }
 
     @RequestMapping(value = "/updatePost")
-    public  String processUpdate(@ModelAttribute("post") Post post,Model model){
-        System.out.println("send to update: "+ post);
-        Post updatedPost = postService.updatePostById(String.valueOf(post.getId()), post);
-        model.addAttribute("post", updatedPost);
+    public String processUpdate(@ModelAttribute("post") Post post, Model model) {
+        postService.updatePostById(String.valueOf(post.getId()), post);
 
-        return "redirect:/post";
+        return "redirect:/post?postId="+post.getId();
     }
 
     @RequestMapping("/newpost")
@@ -60,7 +59,7 @@ public class PostController {
     @RequestMapping(value = "/publish", method = RequestMethod.POST)
     public String publishBlog(@ModelAttribute PostModel postModel, Model model) {
         postService.addPost(postModel);
-        System.out.println(model + " " + postModel);
+//        System.out.println(model + " " + postModel);
 
         return "redirect:/";
     }

@@ -11,7 +11,7 @@
     <input type="text" placeholder="Title" th:name ="title" th:field ="*{title}">
 <!--    <input type="text" placeholder="Tags" th:name ="tags" th:field ="*{tags}">-->
     <textarea placeholder="Write your blog..." rows="10" th:name ="blogContent" th:field ="*{content}"></textarea>
-    <input type="hidden"  th:value="${post.id}">
+    <input type="hidden" th:field ="*{id}" th:value="*{id}">
     <div>
         <button>Publish</button>
     </div>
