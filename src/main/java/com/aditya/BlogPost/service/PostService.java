@@ -19,7 +19,12 @@ public class PostService {
 
         post.setTitle(postModel.getTitle());
         post.setContent(postModel.getBlogContent());
-        post.setExcerpt( postModel.getBlogContent());
+        if(postModel.getBlogContent().length() > 100){
+            post.setExcerpt( postModel.getBlogContent().substring(0,100));
+        }
+        else{
+            post.setExcerpt( postModel.getBlogContent());
+        }
         post.setAuthor("Aditya");
         post.setPublished_at(String.valueOf(new Date()));
         post.setIs_published(true);

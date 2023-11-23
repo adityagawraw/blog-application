@@ -22,9 +22,9 @@ public class Post {
     private int id;
     @Column(name = "title")
     private String title;
-    @Column(name = "excerpt", length = 400)
+    @Column(name = "excerpt", length = 1000)
     private String excerpt;
-    @Column(name = "content", length = 2000)
+    @Column(name = "content", length = 5000)
     private String content;
     @Column(name = "author")
     private String author;

@@ -26,7 +26,7 @@ header div{
     padding: 15px;
     text-align: justify;
 }
-form{
+#blogContent form{
 display:flex;
 justify-content:center;
 }
@@ -35,6 +35,7 @@ display: flex;
 }
 button {
     padding: 5px 10px 5px 10px;
+    margin: 4px
     border:2px black solid;
     background-color: white;
     font-size: large;
@@ -50,12 +51,12 @@ h3{
 }
 #addComment input{
     padding: 2px;
-    margin: 3px;
+    margin: 3px 0px 3px 0px;
 }
 #addComment textarea{
     width:300px;
     padding: 2px;
-    margin: 3px;
+    margin: 3px 0px 3px 0px;
 }
 #addComment p{
     margin: 0px;
