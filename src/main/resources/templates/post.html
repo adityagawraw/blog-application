@@ -30,14 +30,14 @@
     </div>
     <div id="addComment">
         <h3>Add Comment</h3>
-        <form>
-            <p>Name: </p> <input>
-            <p>Email: </p> <input>
-            <p>Comment: </p> <textarea rows="10"></textarea>
+        <form th:action="@{/addComment}" th:object="${comment}" method="post">
+            <p>Name: </p> <input type="text" name="name" th:field="*{name}">
+            <p>Email: </p> <input type="text" name="email" th:field="*{email}">
+            <p>Comment: </p> <textarea rows="10" type="comment" th:field="*{comment}"></textarea>
+            <input type="hidden" name="postId"  th:value="${post.id}">
             <div>
                 <button>Submit</button>
             </div>
-
         </form>
     </div>
     <div id="comment-section">

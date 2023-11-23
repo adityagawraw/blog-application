@@ -11,8 +11,12 @@ import java.util.List;
 
 @Service
 public class PostService {
-    @Autowired
     private PostDaoImplementation postDao;
+
+    @Autowired
+    public PostService(PostDaoImplementation postDao) {
+        this.postDao = postDao;
+    }
 
     public  void addPost(PostModel postModel){
         Post post = new Post();

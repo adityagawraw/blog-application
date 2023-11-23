@@ -2,6 +2,7 @@ package com.aditya.BlogPost.controller;
 
 import com.aditya.BlogPost.dao.PostDao;
 import com.aditya.BlogPost.entity.Post;
+import com.aditya.BlogPost.model.CommentModel;
 import com.aditya.BlogPost.model.PostModel;
 import com.aditya.BlogPost.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ public class PostController {
     @RequestMapping(value = "/post", method = RequestMethod.GET)
     public String getPost(@RequestParam("postId") String id, Model model) {
         model.addAttribute("post", postDao.findById(id));
+        model.addAttribute("comment", new CommentModel());
 
         return "post";
     }
