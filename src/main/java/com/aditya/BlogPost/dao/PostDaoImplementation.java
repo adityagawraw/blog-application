@@ -11,8 +11,9 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public class PostDaoImplementation implements  PostDao{
+public class PostDaoImplementation implements PostDao {
     private EntityManager entityManager;
+
     public PostDaoImplementation(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
@@ -20,7 +21,7 @@ public class PostDaoImplementation implements  PostDao{
     @Override
     @Transactional
     public void save(Post post) {
-    entityManager.persist(post);
+        entityManager.persist(post);
     }
 
     @Override
@@ -40,12 +41,19 @@ public class PostDaoImplementation implements  PostDao{
     @Override
     @Transactional
     public void updateById(int id, String title, String content) {
-    Post post = entityManager.find(Post.class, id);
+        Post post = entityManager.find(Post.class, id);
         System.out.println(post);
-    post.setTitle(title);
-    post.setContent(content);
-    post.setUpdated_at(String.valueOf(new Date()));
+        post.setTitle(title);
+        post.setContent(content);
+        post.setUpdated_at(String.valueOf(new Date()));
 
-    entityManager.merge(post);
+        entityManager.merge(post);
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(String id) {
+        Post post = entityManager.find(Post.class, Integer.parseInt(id));
+        entityManager.remove(post);
     }
 }

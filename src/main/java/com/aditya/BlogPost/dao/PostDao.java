@@ -9,4 +9,6 @@ public interface PostDao {
     public List<Post> findAllPosts();
     public  Post findById(String id);
     public void updateById(int id, String title, String content);
+
+     public void deleteById(String id);
 }

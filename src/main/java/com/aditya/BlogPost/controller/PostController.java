@@ -49,6 +49,13 @@ public class PostController {
         return "redirect:/post?postId="+post.getId();
     }
 
+    @RequestMapping(value = "/deletePost")
+    public String deletePost(@RequestParam(value = "postId") String id) {
+        postService.deletePostById(id);
+
+        return "redirect:/";
+    }
+
     @RequestMapping("/newpost")
     public String getHomePage(Model model) {
         model.addAttribute("post", new PostModel());

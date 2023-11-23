@@ -22,6 +22,10 @@
         <input  type="hidden"  name="postId" th:value="${post.id}">
         <button type="submit">Edit Post</button>
     </form>
+    <form th:action="@{/deletePost}">
+        <input  type="hidden"  name="postId" th:value="${post.id}">
+        <button type="submit">Delete Post</button>
+    </form>
 </section>
 </body>
 </html>

@@ -41,4 +41,7 @@ public class PostService {
         return  postDao.findById(postId);
     }
 
+    public void deletePostById(String id) {
+        postDao.deleteById(id);
+    }
 }
