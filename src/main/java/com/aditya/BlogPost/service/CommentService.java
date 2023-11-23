@@ -3,11 +3,9 @@ package com.aditya.BlogPost.service;
 import com.aditya.BlogPost.dao.CommentDao;
 import com.aditya.BlogPost.entity.Comment;
 import com.aditya.BlogPost.model.CommentModel;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.List;
 
 @Service
 public class CommentService {
@@ -22,12 +20,21 @@ public class CommentService {
         commentEntity.setName(commentModel.getName());
         commentEntity.setEmail(commentModel.getEmail());
         commentEntity.setComment(commentModel.getComment());
-        commentEntity.setCreated_at(String.valueOf(new Date()));
-        commentEntity.setUpdated_at(String.valueOf(new Date()));
+        commentEntity.setCreatedAt(String.valueOf(new Date()));
+        commentEntity.setUpdatedAt(String.valueOf(new Date()));
 
         commentDao.save(commentEntity, commentModel.getPostId());
     }
     public void deleteComment(String commentId){
         commentDao.delete(commentId);
+    }
+    public Comment getCommentbyId(String commentId){
+        Comment comment = commentDao.findById(commentId);
+
+        return comment;
+    }
+
+    public  void updateCommentById(String commentId, String updatedComment){
+        commentDao.updateById(commentId, updatedComment);
     }
 }

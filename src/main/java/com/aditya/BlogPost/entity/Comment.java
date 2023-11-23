@@ -16,9 +16,9 @@ public class Comment {
     @Column(name = "comment", length = 400)
     private  String comment;
     @Column(name = "created_at")
-    private  String created_at;
+    private  String createdAt;
     @Column(name = "updated_at")
-    private  String updated_at;
+    private  String updatedAt;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
     @JoinColumn(name = "post_id")
@@ -56,20 +56,20 @@ public class Comment {
         this.comment = comment;
     }
 
-    public String getCreated_at() {
-        return created_at;
+    public String getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public String getUpdated_at() {
-        return updated_at;
+    public String getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUpdated_at(String updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public Post getPost() {
@@ -87,8 +87,8 @@ public class Comment {
         this.name = name;
         this.email = email;
         this.comment = comment;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
+        this.createdAt = created_at;
+        this.updatedAt = updated_at;
     }
 
     @Override
@@ -98,8 +98,8 @@ public class Comment {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", comment='" + comment + '\'' +
-                ", created_at='" + created_at + '\'' +
-                ", updated_at='" + updated_at + '\'' +
+                ", created_at='" + createdAt + '\'' +
+                ", updated_at='" + updatedAt + '\'' +
                 ", post=" + post +
                 '}';
     }

@@ -7,8 +7,10 @@
 <body>
 <link rel="stylesheet" th:href="@{/css/writeBlog.css}">
 <h2>Update Comment</h2>
-<form action="">
-    <textarea placeholder="" rows="10"></textarea>
+<form th:action="@{/porcessUpdateComment}" method="post">
+    <textarea placeholder="" rows="5" th:name="updatedComment" th:text="${comment.comment}"></textarea>
+    <input type="hidden" th:name="commentId" th:value="${comment.id}">
+    <input type="hidden" th:name="postId" th:value="${postId}">
     <div>
         <button>Submit</button>
     </div>

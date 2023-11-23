@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -35,5 +36,21 @@ public class CommentDaoImpl implements  CommentDao{
     public void delete(String commentId) {
     Comment comment = entityManager.find(Comment.class, String.valueOf(commentId));
     entityManager.remove(comment);
+    }
+
+    @Override
+    @Transactional
+    public Comment findById(String commentId) {
+        return entityManager.find(Comment.class, String.valueOf(commentId));
+    }
+
+    @Override
+    @Transactional
+    public void updateById(String commentId, String updatedComment){
+        Comment comment = entityManager.find(Comment.class, String.valueOf(commentId));
+        comment.setComment(updatedComment);
+        comment.setUpdatedAt(String.valueOf(new Date()));
+
+        entityManager.merge(comment);
     }
 }
