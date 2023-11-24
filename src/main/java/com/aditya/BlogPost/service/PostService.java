@@ -2,6 +2,7 @@ package com.aditya.BlogPost.service;
 
 import com.aditya.BlogPost.dao.PostDaoImplementation;
 import com.aditya.BlogPost.entity.Post;
+import com.aditya.BlogPost.entity.Tag;
 import com.aditya.BlogPost.model.PostModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,18 +31,25 @@ public class PostService {
             post.setExcerpt( postModel.getBlogContent());
         }
         post.setAuthor("Aditya");
-        post.setPublished_at(String.valueOf(new Date()));
-        post.setIs_published(true);
-        post.setCreated_at(String.valueOf(new Date()));
-        post.setUpdated_at(String.valueOf(new Date()));
+        post.setPublishedAt(String.valueOf(new Date()));
+        post.setPublished(true);
+        post.setCreatedAt(String.valueOf(new Date()));
+        post.setUpdatedAt(String.valueOf(new Date()));
+        String []tags =  postModel.getTags().split(",");
+        for(String tagStr : tags){
+            Tag tag = new Tag();
+            tag.setName(tagStr);
+            tag.setCreatedAt(String.valueOf(new Date()));
+            tag.setUpdatedAt(String.valueOf(new Date()));
+
+            post.addTag(tag);
+        }
 
         postDao.save(post);
     }
 
     public List<Post> getPosts(){
-        List<Post> posts = postDao.findAllPosts();
-
-        return  posts;
+        return postDao.findAllPosts();
     }
 
     public Post updatePostById(String postId, Post post){

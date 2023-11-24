@@ -14,10 +14,14 @@
 <section>
     <h1 id="title" th:text="${post.title}"></h1>
     <div id="blogInfo">
-        <span th:text="${post.author}"></span>
-        <span th:text="${post.title}"></span>
+        <span th:text="${post.author}"></span>,
+        <span th:text="${post.createdAt}"></span>
     </div>
     <p id="blogContent" th:text="${post.Content}"></p>
+    <div id="tags-section">
+        <span id="tags-heading">Tags: </span>
+        <span class="tags" th:each="tag : ${post.tags}" th:text="${tag.name}"></span>
+    </div>
     <div id="postOptions">
         <form th:action="@{/editPost}">
             <input type="hidden" name="postId" th:value="${post.id}">
@@ -34,7 +38,7 @@
             <span>Name: </span> <input type="text" name="name" th:field="*{name}">
             <span>Email: </span> <input type="text" name="email" th:field="*{email}">
             <p>Comment: </p> <textarea rows="4" type="comment" th:field="*{comment}"></textarea>
-            <input type="hidden" name="postId"  th:value="${post.id}">
+            <input type="hidden" name="postId" th:value="${post.id}">
             <div>
                 <button>Submit</button>
             </div>

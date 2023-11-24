@@ -6,7 +6,6 @@ import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
-import javax.xml.crypto.Data;
 import java.util.Date;
 import java.util.List;
 
@@ -45,7 +44,7 @@ public class PostDaoImplementation implements PostDao {
         System.out.println(post);
         post.setTitle(title);
         post.setContent(content);
-        post.setUpdated_at(String.valueOf(new Date()));
+        post.setUpdatedAt(String.valueOf(new Date()));
 
         entityManager.merge(post);
     }

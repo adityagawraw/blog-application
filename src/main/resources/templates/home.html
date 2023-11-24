@@ -9,20 +9,23 @@
 <header>
     <h1>My Blog Application</h1>
     <div>
+        <form th:action="@{/newpost}" method="post">
+            <button>New Blog</button>
+        </form>
         <input id="search" type="text" placeholder="Search">
         <a href="">Login</a>
     </div>
 </header>
 <section>
-    <div class="blog" th:action="@{/blog}" th:each="post:${posts}" >
+    <div class="blog" th:action="@{/blog}" th:each="post:${posts}">
         <h1 class="title" th:text="${post.title}"></h1>
         <span th:text="${post.author}"> </span>
-        <span th:text="${post.published_at}"></span><br>
+        <span th:text="${post.publishedAt}"></span><br>
         <p class="excerpt" th:text="${post.excerpt}"></p>
 
         <form th:action="@{/post}">
-        <input  type="hidden"  name="postId" th:value="${post.id}">
-        <button type="submit">Read More</button>
+            <input type="hidden" name="postId" th:value="${post.id}">
+            <button type="submit">Read More</button>
         </form>
 
     </div>
