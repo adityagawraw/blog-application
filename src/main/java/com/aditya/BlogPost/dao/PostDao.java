@@ -11,4 +11,6 @@ public interface PostDao {
     public void updateById(int id, String title, String content);
 
      public void deleteById(String id);
+     public List<Post> sortByNewest();
+     public List<Post> searchbyPostFields(String search, String order);
 }

@@ -3,12 +3,16 @@ package com.aditya.BlogPost.service;
 import com.aditya.BlogPost.dao.PostDaoImplementation;
 import com.aditya.BlogPost.entity.Post;
 import com.aditya.BlogPost.entity.Tag;
+import com.aditya.BlogPost.model.PostFilterAndSearch;
 import com.aditya.BlogPost.model.PostModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class PostService {
@@ -19,46 +23,57 @@ public class PostService {
         this.postDao = postDao;
     }
 
-    public  void addPost(PostModel postModel){
+    public void addPost(PostModel postModel) {
         Post post = new Post();
 
         post.setTitle(postModel.getTitle());
         post.setContent(postModel.getBlogContent());
-        if(postModel.getBlogContent().length() > 100){
-            post.setExcerpt( postModel.getBlogContent().substring(0,100));
+        if (postModel.getBlogContent().length() > 100) {
+            post.setExcerpt(postModel.getBlogContent().substring(0, 100) + "...");
+        } else {
+            post.setExcerpt(postModel.getBlogContent() + "...");
         }
-        else{
-            post.setExcerpt( postModel.getBlogContent());
-        }
-        post.setAuthor("Aditya");
+        post.setAuthor("harry");
         post.setPublishedAt(String.valueOf(new Date()));
         post.setPublished(true);
         post.setCreatedAt(String.valueOf(new Date()));
         post.setUpdatedAt(String.valueOf(new Date()));
-        String []tags =  postModel.getTags().split(",");
-        for(String tagStr : tags){
+        String[] tags = postModel.getTags().split(",");
+
+        for (String tagStr : tags) {
             Tag tag = new Tag();
             tag.setName(tagStr);
             tag.setCreatedAt(String.valueOf(new Date()));
             tag.setUpdatedAt(String.valueOf(new Date()));
-
             post.addTag(tag);
         }
 
         postDao.save(post);
     }
 
-    public List<Post> getPosts(){
-        return postDao.findAllPosts();
-    }
-
-    public Post updatePostById(String postId, Post post){
+    public Post updatePostById(String postId, Post post) {
         postDao.updateById(Integer.parseInt(postId), post.getTitle(), post.getContent());
 
-        return  postDao.findById(postId);
+        return postDao.findById(postId);
     }
 
     public void deletePostById(String id) {
         postDao.deleteById(id);
+    }
+
+    public List<Post> getPosts() {
+        List<Post> posts = postDao.findAllPosts();
+//        return getPaginatedPosts(posts, page, paginationValue);
+        return  posts;
+    }
+
+
+//    public List<Post> getPostOnSearchAndFilter(List<String> authors,List<String> tags, String search, String order ){
+//        postDao.searchbyPostFields("Aditya");
+//        return null;
+//    }
+
+    public List<Post> getPostOnSearchAndFilter(String searchQuery, String order){
+        return postDao.searchbyPostFields(searchQuery, order);
     }
 }

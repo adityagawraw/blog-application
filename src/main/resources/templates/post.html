@@ -6,9 +6,18 @@
 </head>
 <body>
 <link rel="stylesheet" th:href="@{/css/blog.css}">
-
-<header>
+<header id="post-header">
     <h4>My Blog Application</h4>
+    <div id="postOptions">
+        <form th:action="@{/editPost}">
+            <input type="hidden" name="postId" th:value="${post.id}">
+            <button type="submit">Edit Post</button>
+        </form>
+        <form th:action="@{/deletePost}">
+            <input type="hidden" name="postId" th:value="${post.id}">
+            <button type="submit">Delete Post</button>
+        </form>
+    </div>
     <div><a href="">Login</a></div>
 </header>
 <section>
@@ -21,16 +30,6 @@
     <div id="tags-section">
         <span id="tags-heading">Tags: </span>
         <span class="tags" th:each="tag : ${post.tags}" th:text="${tag.name}"></span>
-    </div>
-    <div id="postOptions">
-        <form th:action="@{/editPost}">
-            <input type="hidden" name="postId" th:value="${post.id}">
-            <button type="submit">Edit Post</button>
-        </form>
-        <form th:action="@{/deletePost}">
-            <input type="hidden" name="postId" th:value="${post.id}">
-            <button type="submit">Delete Post</button>
-        </form>
     </div>
     <div id="addComment">
         <h3>Add Comment</h3>

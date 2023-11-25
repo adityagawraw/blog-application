@@ -27,11 +27,14 @@ header div{
     text-align: justify;
 }
 #blogContent form{
-display:flex;
-justify-content:center;
+    display:flex;
+    justify-content:center;
 }
 #postOptions{
-display: flex;
+    display: flex;
+}
+#postOptions form{
+    margin: 0px 4px 0px 4px;
 }
 button {
     padding: 5px 10px 5px 10px;
@@ -62,9 +65,9 @@ h3{
     margin: 0px;
 }
 #comment-section{
-margin: 15px;
-border: black solid 1px;
-padding: 5px;
+    margin: 15px;
+    border: black solid 1px;
+    padding: 5px;
 }
 .comment{
     border: 1px black solid;
@@ -80,17 +83,22 @@ padding: 5px;
 }
 .comment-action button{
     padding: 2px 5px 2px 5px;
-     border: 1px solid black;
-     margin: 2px;
+    border: 1px solid black;
+    margin: 2px;
 }
 #tags-section{
-padding:5px;
+    padding:5px;
 }
 #tags-heading{
-font-size:large;
+    font-size:large;
 }
 .tags{
-border:1px solid black;
-padding:2px 5px 2px 5px;
-margin:2px;
+    border:1px solid black;
+    padding:2px 5px 2px 5px;
+    margin:2px;
+}
+#post-header{
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
 }

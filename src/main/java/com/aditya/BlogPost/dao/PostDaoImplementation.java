@@ -6,6 +6,7 @@ import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -27,8 +28,8 @@ public class PostDaoImplementation implements PostDao {
     @Transactional
     public List<Post> findAllPosts() {
         TypedQuery<Post> query = entityManager.createQuery("FROM Post", Post.class);
-        List<Post> posts = query.getResultList();
-        return posts;
+
+        return query.getResultList();
     }
 
     @Override
@@ -54,5 +55,28 @@ public class PostDaoImplementation implements PostDao {
     public void deleteById(String id) {
         Post post = entityManager.find(Post.class, Integer.parseInt(id));
         entityManager.remove(post);
+    }
+
+    @Override
+    @Transactional
+    public List<Post> sortByNewest() {
+        TypedQuery<Post> query = entityManager.createQuery("FROM Post ORDER BY id DESC", Post.class);
+
+        return query.getResultList();
+    }
+
+    @Override
+    @Transactional
+    public List<Post> searchbyPostFields(String searchQuery, String order) {
+        TypedQuery<Post> query =
+                entityManager.createQuery("SELECT p FROM Post p WHERE p.author LIKE ?1" +
+                        " OR p.title LIKE ?2 OR p.content LIKE ?3 ORDER BY id "+order, Post.class);
+        query.setParameter(1, "%"+searchQuery+"%");
+        query.setParameter(2, "%"+searchQuery+"%");
+        query.setParameter(3, "%"+searchQuery+"%");
+
+        System.out.println("order: "+order);
+
+        return query.getResultList();
     }
 }

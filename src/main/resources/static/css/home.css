@@ -2,7 +2,7 @@ header {
     margin:10px;
     width: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 2fr;
 }
 header div{
     display: flex;
@@ -14,6 +14,14 @@ header div input{
 }
 section{
 display: grid;
+grid-template-columns: 0.7fr 2fr;
+}
+#search-section{
+border:1px solid black;
+padding:3px
+}
+#blogs{
+display: grid;
 grid-template-columns: 1fr 1fr;
 }
 .blog{
@@ -22,7 +30,8 @@ grid-template-columns: 1fr 1fr;
     padding: 10px 10px 10px 10px;
 }
 #search{
-border-radius: 10px}
+padding: 2px
+}
 .title{
     margin: 0px;
     padding-bottom: 10px;

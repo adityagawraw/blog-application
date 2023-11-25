@@ -2,14 +2,14 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Blog</title>
 </head>
 <body>
 <link rel="stylesheet" th:href="@{/css/writeBlog.css}">
-<h1>New/Edit Post</h1>
+<h1>Edit Post</h1>
 <form th:action="@{/updatePost}" modelAttribute = "post" th:object="${post}" method="post">
     <input type="text" placeholder="Title" th:name ="title" th:field ="*{title}">
-<!--    <input type="text" placeholder="Tags" th:name ="tags" th:field ="*{tags}">-->
+<!--    <input type="text" placeholder="Tags" th:name ="tags" th:field ="*{tags}" th:value="*{tags.tag.name}">-->
     <textarea placeholder="Write your blog..." rows="10" th:name ="blogContent" th:field ="*{content}"></textarea>
     <input type="hidden" th:field ="*{id}" th:value="*{id}">
     <div>
