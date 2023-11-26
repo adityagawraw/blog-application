@@ -26,8 +26,8 @@ public class PostDaoImplementation implements PostDao {
 
     @Override
     @Transactional
-    public List<Post> findAllPosts() {
-        TypedQuery<Post> query = entityManager.createQuery("FROM Post", Post.class);
+    public List<Post> findAllPosts(String order) {
+        TypedQuery<Post> query = entityManager.createQuery("FROM Post order by id "+order, Post.class);
 
         return query.getResultList();
     }
@@ -76,6 +76,13 @@ public class PostDaoImplementation implements PostDao {
         query.setParameter(3, "%"+searchQuery+"%");
 
         System.out.println("order: "+order);
+
+        return query.getResultList();
+    }
+
+    @Override
+    public List<String> findAllAuthors(){
+        TypedQuery<String> query=  entityManager.createQuery("select distinct author from Post", String.class);
 
         return query.getResultList();
     }

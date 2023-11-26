@@ -3,16 +3,12 @@ package com.aditya.BlogPost.service;
 import com.aditya.BlogPost.dao.PostDaoImplementation;
 import com.aditya.BlogPost.entity.Post;
 import com.aditya.BlogPost.entity.Tag;
-import com.aditya.BlogPost.model.PostFilterAndSearch;
 import com.aditya.BlogPost.model.PostModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class PostService {
@@ -61,19 +57,15 @@ public class PostService {
         postDao.deleteById(id);
     }
 
-    public List<Post> getPosts() {
-        List<Post> posts = postDao.findAllPosts();
-//        return getPaginatedPosts(posts, page, paginationValue);
-        return  posts;
+    public List<Post> getPosts(String order) {
+        return   postDao.findAllPosts(order);
     }
 
-
-//    public List<Post> getPostOnSearchAndFilter(List<String> authors,List<String> tags, String search, String order ){
-//        postDao.searchbyPostFields("Aditya");
-//        return null;
-//    }
-
-    public List<Post> getPostOnSearchAndFilter(String searchQuery, String order){
+    public List<Post> getPostOnSearchAndFilter(List<String> authors,List<String> tagIds, String searchQuery, String order){
         return postDao.searchbyPostFields(searchQuery, order);
+    }
+
+    public List<String> getAuthors(){
+         return postDao.findAllAuthors();
     }
 }

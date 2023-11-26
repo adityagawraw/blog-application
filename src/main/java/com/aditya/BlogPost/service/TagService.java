@@ -5,6 +5,8 @@ import com.aditya.BlogPost.entity.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TagService {
     private TagDao tagDao;
@@ -15,6 +17,8 @@ public class TagService {
     }
 
     public void saveTag(Tag tag){
-
+    }
+    public List<Tag> getTags(){
+        return tagDao.findAll();
     }
 }
