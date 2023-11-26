@@ -1,9 +1,7 @@
 package com.aditya.BlogPost.service;
 
 import com.aditya.BlogPost.dao.PostDao;
-import com.aditya.BlogPost.dao.PostDaoImplementation;
 import com.aditya.BlogPost.dao.TagDao;
-import com.aditya.BlogPost.dao.TagDaoImpl;
 import com.aditya.BlogPost.entity.Post;
 import com.aditya.BlogPost.entity.Tag;
 import com.aditya.BlogPost.model.PostModel;
@@ -62,36 +60,40 @@ public class PostService {
         postDao.deleteById(id);
     }
 
-    public List<Post> getPosts(String order) {
-        return   postDao.findAllPosts(order);
+    public List<Post> getPosts(String order, Integer start, Integer limit) {
+        return getPaginatedPosts(postDao.findAllPosts(order), start, limit);
     }
 
     public List<Post> getPostOnSearchAndFilter(List<String> authors, List<Integer> tagIds,
-                                                String searchQuery, String order){
-        System.out.println("aouthors: "+authors.size()+"tags : "+tagIds.size());
-
-        if(authors.size() > 0 && tagIds.size() == 0 ){
-            return postDao.findByAuthors(authors, order);
-        } else if (authors.size() == 0 && tagIds.size() > 0) {
+                                                String searchQuery, String order, Integer start, Integer limit){
+        if(!authors.isEmpty() && tagIds.isEmpty()){
+            return getPaginatedPosts(postDao.findByAuthors(authors, order), start, limit);
+        } else if (authors.isEmpty() && !tagIds.isEmpty()) {
             System.out.println(tagIds);
-            return  tagDao.findPostByTagId(tagIds, order);
-        } else if(authors.size()>0 && tagIds.size() > 0) {
-            List<Post> postsByAuthors = postDao.findByAuthors(authors, order);
-            List<Post> postsByTagIds = tagDao.findPostByTagId(tagIds, order);
-            Set<Post> posts = new HashSet<>();
+            return  tagDao.findPostByTagIds(tagIds, order);
+        } else if(!authors.isEmpty() && !tagIds.isEmpty()) {
 
-            for(Post post: postsByAuthors){
-                posts.add(post);
-            }
-            for(Post post: postsByTagIds){
-                posts.add(post);
-            }
-
-            return  new ArrayList<>(posts);
+            return  tagDao.findPostByTagIdsAndAuthors(tagIds, authors, order);
         }
         return postDao.searchbyPostFields(searchQuery, order);
     }
-
+    public List<Post> getPaginatedPosts(List<Post> posts, Integer start, Integer limit){
+        int lastIndex = start +limit;
+        if(start >= posts.size()){
+            start = posts.size() - limit -1;
+            System.out.println("start: "+start+" last: "+lastIndex);
+        }
+        else if(start+limit-1 >= posts.size()){
+            lastIndex = posts.size()-1;
+             System.out.println("start: "+start+" last: "+lastIndex);
+        }
+         else{
+             lastIndex = start +limit;
+             System.out.println("start: "+start+" last: "+lastIndex+" post size: "+ posts.size());
+         }
+        List<Post> paginatedPosts = posts.subList(start-1, lastIndex);
+        return  paginatedPosts;
+    }
     public List<String> getAuthors(){
          return postDao.findAllAuthors();
     }

@@ -42,6 +42,9 @@
             <span th:text="${post.author}"> </span>
             <span th:text="${post.publishedAt}"></span><br>
             <p class="excerpt" th:text="${post.excerpt}"></p>
+            <div id="tags-section">
+                <span class="tags" th:each="tag : ${post.tags}" th:text="${tag.name}"></span>
+            </div>
             <form th:action="@{/post}">
                 <input type="hidden" name="postId" th:value="${post.id}">
                 <button type="submit">Read More</button>

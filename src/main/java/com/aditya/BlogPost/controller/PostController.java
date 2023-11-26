@@ -41,8 +41,8 @@ public class PostController {
                           @RequestParam(value = "sortField", defaultValue = "publishedDate") String sortField,
                           @RequestParam(value = "order", defaultValue = "desc") String order,
                           @RequestParam(value = "searchQuery", defaultValue = "") String searchQuery,
-                          @RequestParam(value = "start", defaultValue = "1") String start,
-                          @RequestParam(value = "limit", defaultValue = "3") String limit,Model model){
+                          @RequestParam(value = "start", defaultValue = "0") Integer start,
+                          @RequestParam(value = "limit", defaultValue = "3") Integer limit,Model model){
         model.addAttribute("authors", postService.getAuthors());
         model.addAttribute("tags", tagService.getTags());
         model.addAttribute("order",order);
@@ -50,12 +50,12 @@ public class PostController {
         model.addAttribute("start", start);
         model.addAttribute("limit", limit);
 
-        if(authors.size()== 0 && tagIds.size() == 0){
-            model.addAttribute("posts", postService.getPosts(order));
+        if(authors.isEmpty() && tagIds.isEmpty()){
+            model.addAttribute("posts", postService.getPosts(order, 6, limit));
         }
         else{
             model.addAttribute("posts",
-                    postService.getPostOnSearchAndFilter(authors, tagIds, searchQuery, order));
+                    postService.getPostOnSearchAndFilter(authors, tagIds, searchQuery, order, start, limit));
         }
 
         model.addAttribute("start", 12);
@@ -88,7 +88,7 @@ public class PostController {
                               @RequestParam(value = "order", defaultValue = "desc") String order,
                               @RequestParam(value = "searchQuery", defaultValue = "") String searchQuery,
                               @RequestParam(value = "start", defaultValue = "1") String start,
-                              @RequestParam(value = "limit", defaultValue = "3") String limit,Model model){
+                              @RequestParam(value = "limit", defaultValue = "3") String limit, Model model){
         model.addAttribute("authors",authors );
         model.addAttribute("tags", tagIds);
         model.addAttribute("order",order);

@@ -50,4 +50,11 @@ button {
     background-color: white;
     font-size: large;
 }
-
+#tags-section{
+    padding:5px;
+}
+.tags{
+    border:1px solid black;
+    padding:2px 5px 2px 5px;
+    margin:2px;
+}

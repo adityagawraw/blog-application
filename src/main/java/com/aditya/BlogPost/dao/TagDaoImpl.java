@@ -8,10 +8,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Repository
 public class TagDaoImpl implements TagDao {
@@ -36,8 +33,7 @@ public class TagDaoImpl implements TagDao {
     }
 
     @Override
-    public List<Post> findPostByTagId(List<Integer> tagIds, String order) {
-        System.out.println(order);
+    public List<Post> findPostByTagIds(List<Integer> tagIds, String order) {
         Set<Post> posts= new HashSet<>();
 
         TypedQuery<Tag> query = entityManager.createQuery("from Tag where id in :tagIds  ", Tag.class);
@@ -48,6 +44,27 @@ public class TagDaoImpl implements TagDao {
             List<Post> postsInATag = tag.getPosts();
             for(Post post : postsInATag){
                 posts.add(post);
+            }
+        }
+
+        return new ArrayList<>(posts);
+    }
+
+    @Override
+    public List<Post> findPostByTagIdsAndAuthors(List<Integer> tagIds, List<String> authors, String order) {
+        Set<Post> posts= new HashSet<>();
+        Set<String> authorsByName = new HashSet<>(authors);
+
+        TypedQuery<Tag> query = entityManager.createQuery("from Tag where id in :tagIds  ", Tag.class);
+        query.setParameter("tagIds", tagIds);
+
+        List<Tag> tags = query.getResultList();
+        for(Tag tag:tags){
+            List<Post> postsInATag = tag.getPosts();
+            for(Post post : postsInATag){
+                if(authorsByName.contains(post.getAuthor())){
+                    posts.add(post);
+                }
             }
         }
 
