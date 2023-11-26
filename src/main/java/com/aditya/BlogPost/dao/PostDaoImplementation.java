@@ -86,4 +86,32 @@ public class PostDaoImplementation implements PostDao {
 
         return query.getResultList();
     }
+
+    @Override
+    public List<Post> findByAuthors(List<String> authors, String order) {
+        TypedQuery<Post> query=
+                entityManager.createQuery("from Post where author in :authors order by id "+order, Post.class);
+        query.setParameter("authors", authors);
+        List<Post> posts = query.getResultList();
+        System.out.println("authors"+authors);
+        System.out.println(posts);
+        return posts;
+    }
+
+    @Override
+    public List<Post> findByTags(List<String> tags, String order) {
+        TypedQuery<Post> query=
+                entityManager.createQuery("from Post where author in :authors order by id "+order, Post.class);
+        query.setParameter("authors", tags);
+        List<Post> posts = query.getResultList();
+
+        return null;
+    }
+
+    @Override
+    public List<Post> findByAuthorsAndTags(List<String> authors, List<String> tags, String order) {
+        return null;
+    }
+
+
 }

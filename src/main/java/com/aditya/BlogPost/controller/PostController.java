@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -35,14 +36,13 @@ public class PostController {
     }
 
     @RequestMapping(value = "/")
-    public String getHome(@RequestParam(value = "author", defaultValue = "0") List<String> authors,
-                          @RequestParam(value = "tagId",  defaultValue = "0") List<String> tagIds,
+    public String getHome(@RequestParam(value = "author", defaultValue ="") List<String> authors,
+                          @RequestParam(value = "tagId",  defaultValue = "") List<Integer> tagIds,
                           @RequestParam(value = "sortField", defaultValue = "publishedDate") String sortField,
                           @RequestParam(value = "order", defaultValue = "desc") String order,
                           @RequestParam(value = "searchQuery", defaultValue = "") String searchQuery,
                           @RequestParam(value = "start", defaultValue = "1") String start,
                           @RequestParam(value = "limit", defaultValue = "3") String limit,Model model){
-
         model.addAttribute("authors", postService.getAuthors());
         model.addAttribute("tags", tagService.getTags());
         model.addAttribute("order",order);
@@ -50,11 +50,12 @@ public class PostController {
         model.addAttribute("start", start);
         model.addAttribute("limit", limit);
 
-        if(authors.size()== 0 && tagIds.size() == 0 && searchQuery != ""){
+        if(authors.size()== 0 && tagIds.size() == 0){
             model.addAttribute("posts", postService.getPosts(order));
         }
         else{
-            model.addAttribute("posts", postService.getPostOnSearchAndFilter(authors, tagIds, searchQuery, order));
+            model.addAttribute("posts",
+                    postService.getPostOnSearchAndFilter(authors, tagIds, searchQuery, order));
         }
 
         model.addAttribute("start", 12);

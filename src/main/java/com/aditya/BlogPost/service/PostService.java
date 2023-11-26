@@ -1,22 +1,27 @@
 package com.aditya.BlogPost.service;
 
+import com.aditya.BlogPost.dao.PostDao;
 import com.aditya.BlogPost.dao.PostDaoImplementation;
+import com.aditya.BlogPost.dao.TagDao;
+import com.aditya.BlogPost.dao.TagDaoImpl;
 import com.aditya.BlogPost.entity.Post;
 import com.aditya.BlogPost.entity.Tag;
 import com.aditya.BlogPost.model.PostModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class PostService {
-    private PostDaoImplementation postDao;
+    private PostDao postDao;
+    private TagDao tagDao;
+
 
     @Autowired
-    public PostService(PostDaoImplementation postDao) {
+    public PostService(PostDao postDao, TagDao tagDao ) {
         this.postDao = postDao;
+        this.tagDao = tagDao;
     }
 
     public void addPost(PostModel postModel) {
@@ -61,7 +66,29 @@ public class PostService {
         return   postDao.findAllPosts(order);
     }
 
-    public List<Post> getPostOnSearchAndFilter(List<String> authors,List<String> tagIds, String searchQuery, String order){
+    public List<Post> getPostOnSearchAndFilter(List<String> authors, List<Integer> tagIds,
+                                                String searchQuery, String order){
+        System.out.println("aouthors: "+authors.size()+"tags : "+tagIds.size());
+
+        if(authors.size() > 0 && tagIds.size() == 0 ){
+            return postDao.findByAuthors(authors, order);
+        } else if (authors.size() == 0 && tagIds.size() > 0) {
+            System.out.println(tagIds);
+            return  tagDao.findPostByTagId(tagIds, order);
+        } else if(authors.size()>0 && tagIds.size() > 0) {
+            List<Post> postsByAuthors = postDao.findByAuthors(authors, order);
+            List<Post> postsByTagIds = tagDao.findPostByTagId(tagIds, order);
+            Set<Post> posts = new HashSet<>();
+
+            for(Post post: postsByAuthors){
+                posts.add(post);
+            }
+            for(Post post: postsByTagIds){
+                posts.add(post);
+            }
+
+            return  new ArrayList<>(posts);
+        }
         return postDao.searchbyPostFields(searchQuery, order);
     }
 
