@@ -53,18 +53,22 @@
     </div>
 </section>
 <footer>
-    <form th:action="@{/next}">
-        <input type="hidden" th:name="start" th:value="1">
-        <input type="hidden" th:name="start" th:value="1">
-        <input type="hidden" th:name="start" th:value="1">
-        <input type="hidden" th:name="start" th:value="1">
-        <input type="hidden" th:name="start" th:value="1">
-        <input type="hidden" th:name="limit" th:value="3">
+    <form th:action="@{/previousPage}">
+        <input type="hidden" th:name="start" th:value="${start}">
+        <input type="hidden" th:name="limit" th:value="${limit}">
+        <input type="hidden" th:name="author" th:value="${author}">
+        <input type="hidden" th:name="tagId" th:value="${tagIds}">
+        <input type="hidden" th:name="order" th:value="${order}">
+        <input type="hidden" th:name="searchQuery" th:value="${searchQuery}">
         <button> < Previous</button>
     </form>
-    <form th:action="@{/}">
-        <input type="hidden" th:name="start" th:value="1">
-        <input type="hidden" th:name="limit" th:value="3">
+    <form th:action="@{/nextPage}">
+        <input type="hidden" th:name="start" th:value="${start}">
+        <input type="hidden" th:name="limit" th:value="${limit}">
+        <input type="hidden" th:name="author" th:value="${author}">
+        <input type="hidden" th:name="tagId" th:value="${tagIds}">
+        <input type="hidden" th:name="order" th:value="${order}">
+        <input type="hidden" th:name="searchQuery" th:value="${searchQuery}">
         <button> Next ></button>
     </form>
 </footer>

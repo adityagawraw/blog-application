@@ -27,6 +27,7 @@ public class PostService {
 
         post.setTitle(postModel.getTitle());
         post.setContent(postModel.getBlogContent());
+
         if (postModel.getBlogContent().length() > 100) {
             post.setExcerpt(postModel.getBlogContent().substring(0, 100) + "...");
         } else {
@@ -41,9 +42,16 @@ public class PostService {
 
         for (String tagStr : tags) {
             Tag tag = new Tag();
-            tag.setName(tagStr);
-            tag.setCreatedAt(String.valueOf(new Date()));
-            tag.setUpdatedAt(String.valueOf(new Date()));
+
+            if(tagDao.findTagFields("name", tagStr) == null){
+                tag.setName(tagStr);
+                tag.setCreatedAt(String.valueOf(new Date()));
+                tag.setUpdatedAt(String.valueOf(new Date()));
+            }
+            else {
+                tag = tagDao.findTagFields("name", tagStr);
+            }
+
             post.addTag(tag);
         }
 
@@ -61,6 +69,7 @@ public class PostService {
     }
 
     public List<Post> getPosts(String order, Integer start, Integer limit) {
+        System.out.println("get posts :"+postDao.findAllPosts(order).size());
         return getPaginatedPosts(postDao.findAllPosts(order), start, limit);
     }
 
@@ -70,30 +79,35 @@ public class PostService {
             return getPaginatedPosts(postDao.findByAuthors(authors, order), start, limit);
         } else if (authors.isEmpty() && !tagIds.isEmpty()) {
             System.out.println(tagIds);
-            return  tagDao.findPostByTagIds(tagIds, order);
+            return  getPaginatedPosts(tagDao.findPostByTagIds(tagIds, order), start, limit);
         } else if(!authors.isEmpty() && !tagIds.isEmpty()) {
 
-            return  tagDao.findPostByTagIdsAndAuthors(tagIds, authors, order);
+            return  getPaginatedPosts(tagDao.findPostByTagIdsAndAuthors(tagIds, authors, order), start, limit);
         }
+
         return postDao.searchbyPostFields(searchQuery, order);
     }
     public List<Post> getPaginatedPosts(List<Post> posts, Integer start, Integer limit){
-        int lastIndex = start +limit;
+        System.out.println("posts size() :-  "+ posts.size()+ posts);
+        int lastIndex = 0;
         if(start >= posts.size()){
-            start = posts.size() - limit -1;
-            System.out.println("start: "+start+" last: "+lastIndex);
+            start = 1;
+             lastIndex = posts.size();
+            System.out.println("start>size: "+start+" last: "+lastIndex+" post size: "+ posts.size()+ " limit: "+limit);
         }
         else if(start+limit-1 >= posts.size()){
             lastIndex = posts.size()-1;
-             System.out.println("start: "+start+" last: "+lastIndex);
+             System.out.println("start+limit-1 >= posts.size() : "+start+" last: "+lastIndex);
         }
          else{
              lastIndex = start +limit;
              System.out.println("start: "+start+" last: "+lastIndex+" post size: "+ posts.size());
          }
+        System.out.println("start service:"+start+" last: "+ lastIndex);
         List<Post> paginatedPosts = posts.subList(start-1, lastIndex);
         return  paginatedPosts;
     }
+
     public List<String> getAuthors(){
          return postDao.findAllAuthors();
     }

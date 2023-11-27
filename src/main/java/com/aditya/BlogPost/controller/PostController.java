@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +42,7 @@ public class PostController {
                           @RequestParam(value = "sortField", defaultValue = "publishedDate") String sortField,
                           @RequestParam(value = "order", defaultValue = "desc") String order,
                           @RequestParam(value = "searchQuery", defaultValue = "") String searchQuery,
-                          @RequestParam(value = "start", defaultValue = "0") Integer start,
+                          @RequestParam(value = "start", defaultValue = "1") Integer start,
                           @RequestParam(value = "limit", defaultValue = "3") Integer limit,Model model){
         model.addAttribute("authors", postService.getAuthors());
         model.addAttribute("tags", tagService.getTags());
@@ -50,17 +51,39 @@ public class PostController {
         model.addAttribute("start", start);
         model.addAttribute("limit", limit);
 
-        if(authors.isEmpty() && tagIds.isEmpty()){
-            model.addAttribute("posts", postService.getPosts(order, 6, limit));
+        System.out.println("start home: "+start+" search "+ searchQuery);
+        if(authors.isEmpty() && tagIds.isEmpty() && searchQuery ==""){
+            System.out.println("tagIds : "+authors+" tagIds  "+ tagIds);
+
+            model.addAttribute("posts", postService.getPosts(order, start, limit));
         }
         else{
             model.addAttribute("posts",
                     postService.getPostOnSearchAndFilter(authors, tagIds, searchQuery, order, start, limit));
         }
 
-        model.addAttribute("start", 12);
-
         return "home";
+    }
+
+    @RequestMapping(value = "/nextPage")
+    public String getNextPage(@RequestParam(value = "author", defaultValue = "0") List<String> authors,
+                              @RequestParam(value = "tagId",  defaultValue = "0") List<String> tagIds,
+                              @RequestParam(value = "sortField", defaultValue = "publishedDate") String sortField,
+                              @RequestParam(value = "order", defaultValue = "desc") String order,
+                              @RequestParam(value = "searchQuery", defaultValue = "") String searchQuery,
+                              @RequestParam(value = "start", defaultValue = "1") Integer start,
+                              @RequestParam(value = "limit", defaultValue = "3") Integer limit,
+                              RedirectAttributes redirectAttributes){
+        start= start+limit;
+        System.out.println("nect page : "+start+" "+ searchQuery);
+        redirectAttributes.addAttribute("author",authors );
+        redirectAttributes.addAttribute("tagId",tagIds );
+        redirectAttributes.addAttribute("sortField",sortField );
+        redirectAttributes.addAttribute("searchQuery",searchQuery );
+        redirectAttributes.addAttribute("start",start );
+        redirectAttributes.addAttribute("limit",limit );
+
+        return "redirect:/";
     }
 
     @RequestMapping(value = "/previousPage")
@@ -81,25 +104,7 @@ public class PostController {
         return "redirect:/";
     }
 
-    @RequestMapping(value = "/nextPage")
-    public String getNextPage(@RequestParam(value = "author", defaultValue = "0") List<String> authors,
-                              @RequestParam(value = "tagId",  defaultValue = "0") List<String> tagIds,
-                              @RequestParam(value = "sortField", defaultValue = "publishedDate") String sortField,
-                              @RequestParam(value = "order", defaultValue = "desc") String order,
-                              @RequestParam(value = "searchQuery", defaultValue = "") String searchQuery,
-                              @RequestParam(value = "start", defaultValue = "1") String start,
-                              @RequestParam(value = "limit", defaultValue = "3") String limit, Model model){
-        model.addAttribute("authors",authors );
-        model.addAttribute("tags", tagIds);
-        model.addAttribute("order",order);
-        model.addAttribute("searchQuery", searchQuery);
-        model.addAttribute("start", start);
-        model.addAttribute("limit", limit);
-
-        return "redirect:/";
-    }
-
-    @RequestMapping(value = "/post", method = RequestMethod.GET)
+    @RequestMapping(value = "/post")
     public String getPost(@RequestParam("postId") String id, Model model) {
         Post post = postDao.findById(id);
         model.addAttribute("post", post);
