@@ -53,7 +53,7 @@ public class Post {
         this.tags = tags;
     }
     public void addTag(Tag tag){
-        if(tags.size()==0){
+        if(tags.isEmpty()){
             tags = new ArrayList<>();
         }
         tags.add(tag);
@@ -69,7 +69,7 @@ public class Post {
     }
 
     public void addComment(Comment comment){
-      if(commentList.size() == 0){
+      if(commentList.isEmpty()){
           commentList = new ArrayList<>();
       }
       commentList.add(comment);

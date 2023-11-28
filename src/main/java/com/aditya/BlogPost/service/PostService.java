@@ -15,7 +15,6 @@ public class PostService {
     private PostDao postDao;
     private TagDao tagDao;
 
-
     @Autowired
     public PostService(PostDao postDao, TagDao tagDao ) {
         this.postDao = postDao;
@@ -69,46 +68,49 @@ public class PostService {
     }
 
     public List<Post> getPosts(String order, Integer start, Integer limit) {
-        System.out.println("get posts :"+postDao.findAllPosts(order).size());
         return getPaginatedPosts(postDao.findAllPosts(order), start, limit);
     }
 
     public List<Post> getPostOnSearchAndFilter(List<String> authors, List<Integer> tagIds,
                                                 String searchQuery, String order, Integer start, Integer limit){
+       if(!Objects.equals(searchQuery, "")){
+           tagIds.clear();
+           authors.clear();
+       }
+
         if(!authors.isEmpty() && tagIds.isEmpty()){
             return getPaginatedPosts(postDao.findByAuthors(authors, order), start, limit);
         } else if (authors.isEmpty() && !tagIds.isEmpty()) {
             System.out.println(tagIds);
             return  getPaginatedPosts(tagDao.findPostByTagIds(tagIds, order), start, limit);
         } else if(!authors.isEmpty() && !tagIds.isEmpty()) {
-
             return  getPaginatedPosts(tagDao.findPostByTagIdsAndAuthors(tagIds, authors, order), start, limit);
         }
 
-        return postDao.searchbyPostFields(searchQuery, order);
+        return getPaginatedPosts(postDao.searchbyPostFields(searchQuery, order), start, limit);
     }
+
     public List<Post> getPaginatedPosts(List<Post> posts, Integer start, Integer limit){
-        System.out.println("posts size() :-  "+ posts.size()+ posts);
-        int lastIndex = 0;
+        int lastIndex = 1;
         if(start >= posts.size()){
-            start = 1;
+            start = posts.size();
              lastIndex = posts.size();
-            System.out.println("start>size: "+start+" last: "+lastIndex+" post size: "+ posts.size()+ " limit: "+limit);
         }
         else if(start+limit-1 >= posts.size()){
-            lastIndex = posts.size()-1;
-             System.out.println("start+limit-1 >= posts.size() : "+start+" last: "+lastIndex);
+            lastIndex = posts.size();
         }
          else{
              lastIndex = start +limit;
-             System.out.println("start: "+start+" last: "+lastIndex+" post size: "+ posts.size());
          }
-        System.out.println("start service:"+start+" last: "+ lastIndex);
-        List<Post> paginatedPosts = posts.subList(start-1, lastIndex);
-        return  paginatedPosts;
+
+        if(posts.isEmpty()){
+            return  null;
+        }
+        return posts.subList(start-1, lastIndex);
     }
 
     public List<String> getAuthors(){
          return postDao.findAllAuthors();
     }
 }
+

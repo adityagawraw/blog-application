@@ -17,8 +17,7 @@ public class TagService {
     }
 
     public void saveTag(Tag tag){
-    }
-    public List<Tag> getTags(){
+    }    public List<Tag> getTags(){
         return tagDao.findAll();
     }
 }

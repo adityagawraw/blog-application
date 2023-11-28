@@ -36,7 +36,6 @@ public class TagDaoImpl implements TagDao {
 
     @Override
     public Tag findTagFields(String field, String value){
-        System.out.println("field:"+field +" value; "+ value);
         TypedQuery<Tag> query = entityManager.createQuery("from Tag where "+field+" = :value", Tag.class);
         query.setParameter("value", value);
 

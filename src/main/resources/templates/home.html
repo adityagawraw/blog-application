@@ -39,7 +39,7 @@
     <div id="blogs">
         <div class="blog" th:each="post:${posts}">
             <h1 class="title" th:text="${post.title}"></h1>
-            <span th:text="${post.author}"> </span>
+            <span th:text="${post.author}"></span><span>, </span>
             <span th:text="${post.publishedAt}"></span><br>
             <p class="excerpt" th:text="${post.excerpt}"></p>
             <div id="tags-section">

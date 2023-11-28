@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<link rel="stylesheet" th:href=@{/css/login.css}">
+<section>
+    <h1>Login</h1>
+    <form action="#" action="@{/processAuthentication}" method="post">
+        <input name="username" placeholder="Email"><br>
+        <input name="password" placeholder="Password"><br>
+        <button>Login</button>
+    </form>
+    <span>Don't have an account? </span>
+    <a th:href="@{register}">Register</a>
+</section>
+</body>
+</html>

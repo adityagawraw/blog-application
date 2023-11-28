@@ -18,7 +18,7 @@ public class Tag {
     private  String createdAt;
     @Column(name = "updated_at")
     private  String updatedAt;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE, CascadeType.DETACH})
     @JoinTable(
                name = "posts_tags",
                joinColumns = @JoinColumn(name = "tag_id"),
@@ -66,7 +66,7 @@ public class Tag {
         this.posts = posts;
     }
     public void addPost(Post post){
-        if(posts.size() == 0){
+        if(posts.isEmpty()){
             posts = new ArrayList<>();
         }
         posts.add(post);
