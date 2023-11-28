@@ -9,11 +9,11 @@
 <header>
     <h1>My Blog Application</h1>
     <div>
-        <form th:action="@{/newPost}" method="post">
+        <form th:action="@{/newPost}" >
             <button>New Blog</button>
         </form>
 
-        <a href="">Login</a>
+        <a th:href="@{/login}">Login</a>
     </div>
 </header>
 <section>

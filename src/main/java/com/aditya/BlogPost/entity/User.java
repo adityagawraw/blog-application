@@ -1,25 +1,43 @@
 package com.aditya.BlogPost.entity;
 
 import jakarta.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String name;
+    private String username;
     private String email;
     private String password;
-    private boolean isEnabled;
-    private String role;
-
-    public String getRole() {
-        return role;
+    private boolean enabled = true;
+    @OneToOne
+    private Authority authority;
+    public Authority getAuthority() {
+        return authority;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setAuthority(Authority authority) {
+        this.authority = authority;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public Integer getId() {
@@ -29,15 +47,6 @@ public class User {
     public void setId(Integer id) {
         this.id = id;
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -54,19 +63,12 @@ public class User {
         this.password = password;
     }
 
-    public boolean isEnabled() {
-        return isEnabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        isEnabled = enabled;
-    }
-
     public User() {
+        System.out.println("user obj");
     }
 
     public User(String name, String email, String password) {
-        this.name = name;
+        this.username = name;
         this.email = email;
         this.password = password;
     }
@@ -75,10 +77,12 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", name='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", isEnabled=" + isEnabled +
+                ", isEnabled=" + enabled +
                 '}';
     }
+
+
 }

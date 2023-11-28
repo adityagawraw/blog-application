@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -45,14 +46,15 @@ public class PostController {
                           @RequestParam(value = "searchQuery", defaultValue = "") String searchQuery,
                           @RequestParam(value = "start", defaultValue = "1") Integer start,
                           @RequestParam(value = "limit", defaultValue = "3") Integer limit,
-                           Model model){
+                          Principal principal, Model model){
+
         model.addAttribute("authors", postService.getAuthors());
         model.addAttribute("tags", tagService.getTags());
         model.addAttribute("order",order);
         model.addAttribute("searchQuery", searchQuery);
         model.addAttribute("start", start);
         model.addAttribute("limit", limit);
-
+        System.out.println(principal.getName());
         if(authors.isEmpty() && tagIds.isEmpty() && Objects.equals(searchQuery, "")){
             model.addAttribute("posts", postService.getPosts(order, start, limit));
         }
@@ -142,16 +144,16 @@ public class PostController {
         return "redirect:/";
     }
 
-    @RequestMapping(value = "/newPost", method = RequestMethod.POST)
-    public String getHomePage(Model model) {
+    @RequestMapping(value = "/newPost")
+    public String getHomePage(Model model, Principal principal) {
+        System.out.println(principal.getName());
         model.addAttribute("post", new PostModel());
-
         return "writePost";
     }
 
     @RequestMapping(value = "/publish", method = RequestMethod.POST)
-    public String publishBlog(@ModelAttribute PostModel postModel, Model model) {
-        postService.addPost(postModel);
+    public String publishBlog(@ModelAttribute PostModel postModel, Model model, Principal principal) {
+        postService.addPost(postModel, principal.getName());
         return "redirect:/";
     }
 

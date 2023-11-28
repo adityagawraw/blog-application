@@ -21,7 +21,7 @@ public class PostService {
         this.tagDao = tagDao;
     }
 
-    public void addPost(PostModel postModel) {
+    public void addPost(PostModel postModel, String username) {
         Post post = new Post();
 
         post.setTitle(postModel.getTitle());
@@ -32,7 +32,7 @@ public class PostService {
         } else {
             post.setExcerpt(postModel.getBlogContent() + "...");
         }
-        post.setAuthor("harry");
+        post.setAuthor(username);
         post.setPublishedAt(String.valueOf(new Date()));
         post.setPublished(true);
         post.setCreatedAt(String.valueOf(new Date()));
