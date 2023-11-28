@@ -5,18 +5,18 @@
     <title>Title</title>
 </head>
 <body>
-<link rel="stylesheet" th:href=@{/css/login.css}">
+<link rel="stylesheet" th:href="@{/css/login.css}">
 <section>
     <h1>Create Account</h1>
-    <form action="#" action="@{/processAuthentication}" method="post">
-        <input name="name" placeholder="Email"><br>
+    <form action="#" th:action="@{/addUser}" method="post">
+        <input name="name" placeholder="Name"><br>
         <input name="email" placeholder="Email"><br>
         <input name="password" placeholder="Password"><br>
         <input name="password" placeholder="Confirm Password"><br>
-        <button>Submit</button>
+        <button type="submit">Submit</button>
     </form>
     <span>Have account? </span>
-    <a th:href="@{login}">Register</a>
+    <a th:href="@{/login}">Register</a>
 </section>
 </body>
 </html>

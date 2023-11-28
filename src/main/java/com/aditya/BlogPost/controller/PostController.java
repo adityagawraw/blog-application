@@ -142,7 +142,7 @@ public class PostController {
         return "redirect:/";
     }
 
-    @RequestMapping(value = "/newpost", method = RequestMethod.POST)
+    @RequestMapping(value = "/newPost", method = RequestMethod.POST)
     public String getHomePage(Model model) {
         model.addAttribute("post", new PostModel());
 

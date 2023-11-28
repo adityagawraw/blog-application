@@ -5,13 +5,16 @@
     <title>Title</title>
 </head>
 <body>
-<link rel="stylesheet" th:href=@{/css/login.css}">
+<link rel="stylesheet" th:href="@{/css/login.css}">
 <section>
     <h1>Login</h1>
-    <form action="#" action="@{/processAuthentication}" method="post">
-        <input name="username" placeholder="Email"><br>
-        <input name="password" placeholder="Password"><br>
-        <button>Login</button>
+    <form action="#" th:action="@{/processAuthentication}" method="post">
+        <div th:if="${param.error}">
+            Sorry, Invalid username or password!!
+        </div>
+        <input type="text" name="username" placeholder="Email"><br>
+        <input type="password" name="password" placeholder="Password"><br>
+        <button >Login</button>
     </form>
     <span>Don't have an account? </span>
     <a th:href="@{register}">Register</a>
