@@ -77,15 +77,17 @@ public class PostService {
            tagIds.clear();
            authors.clear();
        }
+        else {
+           if(!authors.isEmpty() && tagIds.isEmpty()){
+               return getPaginatedPosts(postDao.findByAuthors(authors, order), start, limit);
+           } else if (authors.isEmpty() && !tagIds.isEmpty()) {
+               System.out.println(tagIds);
+               return  getPaginatedPosts(tagDao.findPostByTagIds(tagIds, order), start, limit);
+           } else if(!authors.isEmpty() && !tagIds.isEmpty()) {
+               return  getPaginatedPosts(tagDao.findPostByTagIdsAndAuthors(tagIds, authors, order), start, limit);
+           }
 
-        if(!authors.isEmpty() && tagIds.isEmpty()){
-            return getPaginatedPosts(postDao.findByAuthors(authors, order), start, limit);
-        } else if (authors.isEmpty() && !tagIds.isEmpty()) {
-            System.out.println(tagIds);
-            return  getPaginatedPosts(tagDao.findPostByTagIds(tagIds, order), start, limit);
-        } else if(!authors.isEmpty() && !tagIds.isEmpty()) {
-            return  getPaginatedPosts(tagDao.findPostByTagIdsAndAuthors(tagIds, authors, order), start, limit);
-        }
+       }
 
         return getPaginatedPosts(postDao.searchbyPostFields(searchQuery, order), start, limit);
     }

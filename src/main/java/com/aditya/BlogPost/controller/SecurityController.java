@@ -24,10 +24,6 @@ public class SecurityController {
         return "register";
     }
 
-    //    @PostMapping("/processAuthentication")
-//    public String processAuthentication(){
-//        return  "register";
-//    }
     @GetMapping("/access-denied")
     public String getAccessDeniedPage() {
         return "authorizationError";
@@ -42,5 +38,4 @@ public class SecurityController {
         userService.addUserData(name, email, password, confirmPassword);
         return "redirect:/login";
     }
-
 }

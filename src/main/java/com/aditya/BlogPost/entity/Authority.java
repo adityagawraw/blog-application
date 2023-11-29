@@ -14,7 +14,7 @@ public class Authority {
     private User user;
     private String username;
     @Column(name = "authority")
-    private String role = "AUTHOR";
+    private String role= "ROLE_AUTHOR";
 
     public String getUsername() {
         return username;
@@ -45,7 +45,7 @@ public class Authority {
     }
 
     public void setRole(String role) {
-        this.role = role;
+        this.role = "ROLE_AUTHOR";
     }
 
 }

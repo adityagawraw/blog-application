@@ -47,7 +47,6 @@ public class PostController {
                           @RequestParam(value = "start", defaultValue = "1") Integer start,
                           @RequestParam(value = "limit", defaultValue = "3") Integer limit,
                           Model model){
-
         model.addAttribute("authors", postService.getAuthors());
         model.addAttribute("tags", tagService.getTags());
         model.addAttribute("order", order);
