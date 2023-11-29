@@ -73,7 +73,7 @@ public class PostService {
 
     public List<Post> getPostOnSearchAndFilter(List<String> authors, List<Integer> tagIds,
                                                 String searchQuery, String order, Integer start, Integer limit){
-       if(!Objects.equals(searchQuery, "")){
+       if(!searchQuery.isEmpty()){
            tagIds.clear();
            authors.clear();
        }

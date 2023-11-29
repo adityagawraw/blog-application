@@ -46,16 +46,15 @@ public class PostController {
                           @RequestParam(value = "searchQuery", defaultValue = "") String searchQuery,
                           @RequestParam(value = "start", defaultValue = "1") Integer start,
                           @RequestParam(value = "limit", defaultValue = "3") Integer limit,
-                          Principal principal, Model model){
+                          Model model){
 
         model.addAttribute("authors", postService.getAuthors());
         model.addAttribute("tags", tagService.getTags());
-        model.addAttribute("order",order);
+        model.addAttribute("order", order);
         model.addAttribute("searchQuery", searchQuery);
         model.addAttribute("start", start);
         model.addAttribute("limit", limit);
-        System.out.println(principal.getName());
-        if(authors.isEmpty() && tagIds.isEmpty() && Objects.equals(searchQuery, "")){
+        if(authors.isEmpty() && tagIds.isEmpty() && searchQuery.isEmpty()){
             model.addAttribute("posts", postService.getPosts(order, start, limit));
         }
         else{
@@ -124,8 +123,12 @@ public class PostController {
     }
 
     @RequestMapping(value = "/editPost")
-    public String editPostPage(@RequestParam(value = "postId") String id, Model model) {
-        model.addAttribute("post", postDao.findById(id));
+    public String editPostPage(@RequestParam(value = "postId") String id, Model model, Principal principal) {
+        Post post = postDao.findById(id);
+        if(!Objects.equals(post.getAuthor(), principal.getName())){
+            return "redirect:/post?postId="+id;
+        }
+        model.addAttribute("post", post);
 
         return "editPost";
     }
@@ -138,7 +141,11 @@ public class PostController {
     }
 
     @RequestMapping(value = "/deletePost")
-    public String deletePost(@RequestParam(value = "postId") String id) {
+    public String deletePost(@RequestParam(value = "postId") String id, Principal principal) {
+        Post post = postDao.findById(id);
+        if(!Objects.equals(post.getAuthor(), principal.getName())){
+            return "redirect:/post?postId="+id;
+        }
         postService.deletePostById(id);
 
         return "redirect:/";

@@ -9,11 +9,18 @@
 <header>
     <h1>My Blog Application</h1>
     <div>
-        <form th:action="@{/newPost}" >
+        <form th:action="@{/newPost}">
             <button>New Blog</button>
         </form>
-
-        <a th:href="@{/login}">Login</a>
+        <div th:unless="${#authorization.expression('isAuthenticated()')}">
+            <button><a th:href="@{/login}">Login</a></button>
+        </div>
+        <div th:if="${#authorization.expression('isAuthenticated()')}">
+            <form action="#" th:action="@{/logout}" method="post">
+                <input type="hidden" value="Logout">
+                <button type="submit">Logout</button>
+            </form>
+        </div>
     </div>
 </header>
 <section>
@@ -22,17 +29,19 @@
         <button type="submit">Search</button>
         <div>
             <span>Sort By: </span><select th:name="order">
-                <option th:value="DESC">New To Old</option>
-                <option th:value="ASC">Old to New</option>
-            </select>
+            <option th:value="DESC">New To Old</option>
+            <option th:value="ASC">Old to New</option>
+        </select>
             <div>
-            <p>Fliter by Author:</p>
-            <input type="checkbox" th:each="author: ${authors}" th:name="author" th:value="${author}" th:text="${author}"><br><br>
+                <p>Fliter by Author:</p>
+                <input type="checkbox" th:each="author: ${authors}" th:name="author" th:value="${author}"
+                       th:text="${author}"><br><br>
             </div>
             <div>
-            <p>Fliter by Tags:</p>
-                <input type="checkbox" th:each="tag: ${tags}" th:name="tagId" th:value="${tag.id}" th:text="${tag.name}"><br><br>
-            <br>
+                <p>Fliter by Tags:</p>
+                <input type="checkbox" th:each="tag: ${tags}" th:name="tagId" th:value="${tag.id}"
+                       th:text="${tag.name}"><br><br>
+                <br>
             </div>
         </div>
     </form>

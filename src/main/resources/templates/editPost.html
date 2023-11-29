@@ -6,7 +6,11 @@
 </head>
 <body>
 <link rel="stylesheet" th:href="@{/css/writeBlog.css}">
+<form th:action="@{/}">
+    <button type="submit">Home</button>
+</form>
 <h1>Edit Post</h1>
+
 <form th:action="@{/updatePost}" modelAttribute = "post" th:object="${post}" method="post">
     <input type="text" placeholder="Title" th:name ="title" th:field ="*{title}">
 <!--    <input type="text" placeholder="Tags" th:name ="tags" th:field ="*{tags}" th:value="*{tags.tag.name}">-->

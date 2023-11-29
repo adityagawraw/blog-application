@@ -29,10 +29,8 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(configurer->
                         configurer
-                                .requestMatchers("/","/post","/nextPage","/previousPage", "/css/**","/register").
-                                permitAll()
-                                .requestMatchers("/editPost", "/updatePost","/deletePost","/newPost","/publish")
-                                .hasRole("AUTHOR")
+                                .requestMatchers("/","/post","/nextPage","/previousPage", "/css/**","/register")
+                                .permitAll()
                                 .anyRequest().authenticated()
                 )
                 .formLogin(form ->
@@ -44,7 +42,8 @@ public class SecurityConfig {
                 )
                 .exceptionHandling(configurer->
                         configurer
-                                .accessDeniedPage("/access-denied"));
+                                .accessDeniedPage("/access-denied"))
+                .logout(logout -> logout.permitAll());
 
         return http.build();
     }

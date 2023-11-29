@@ -40,7 +40,7 @@ public class SecurityController {
                           @RequestParam("confirmPassword") String confirmPassword) {
         System.out.println(name+" "+email+" "+ password);
         userService.addUserData(name, email, password, confirmPassword);
-        return "redirect:/";
+        return "redirect:/login";
     }
 
 }

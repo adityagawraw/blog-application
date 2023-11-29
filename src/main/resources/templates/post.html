@@ -18,7 +18,14 @@
             <button type="submit">Delete Post</button>
         </form>
     </div>
-    <div><a href="">Login</a></div>
+    <div>
+        <form th:action="@{/login}">
+            <button type="submit">Loign</button>
+        </form>
+        <form th:action="@{/}">
+            <button type="submit">Home</button>
+        </form>
+    </div>
 </header>
 <section>
     <h1 id="title" th:text="${post.title}"></h1>

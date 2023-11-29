@@ -12,6 +12,9 @@
         <div th:if="${param.error}">
             Sorry, Invalid username or password!!
         </div>
+        <div th:if="${param.logout}">
+            You are logged out!!
+        </div>
         <input type="text" name="username" placeholder="Email"><br>
         <input type="password" name="password" placeholder="Password"><br>
         <button type="submit">Login</button>
