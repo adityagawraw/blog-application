@@ -16,7 +16,7 @@ public class PostService {
     private TagDao tagDao;
 
     @Autowired
-    public PostService(PostDao postDao, TagDao tagDao ) {
+    public PostService(PostDao postDao, TagDao tagDao) {
         this.postDao = postDao;
         this.tagDao = tagDao;
     }
@@ -38,17 +38,15 @@ public class PostService {
         post.setCreatedAt(String.valueOf(new Date()));
         post.setUpdatedAt(String.valueOf(new Date()));
         String[] tags = postModel.getTags().split(",");
-
         for (String tagStr : tags) {
             Tag tag = new Tag();
 
-            if(tagDao.findTagFields("name", tagStr) == null){
+            if (tagDao.findTagByField("name", tagStr) == null) {
                 tag.setName(tagStr);
                 tag.setCreatedAt(String.valueOf(new Date()));
                 tag.setUpdatedAt(String.valueOf(new Date()));
-            }
-            else {
-                tag = tagDao.findTagFields("name", tagStr);
+            } else {
+                tag = tagDao.findTagByField("name", tagStr);
             }
 
             post.addTag(tag);
@@ -57,8 +55,8 @@ public class PostService {
         postDao.save(post);
     }
 
-    public Post updatePostById(String postId, Post post) {
-        postDao.updateById(Integer.parseInt(postId), post.getTitle(), post.getContent());
+    public Post updatePostById(String postId, String[] tagArr, Post post) {
+        postDao.updateById(Integer.parseInt(postId), post.getTitle(), post.getContent(), tagArr);
 
         return postDao.findById(postId);
     }
@@ -72,50 +70,78 @@ public class PostService {
     }
 
     public List<Post> getPostOnSearchAndFilter(List<String> authors, List<Integer> tagIds,
-                                                String searchQuery, String order, Integer start, Integer limit){
-       if(!searchQuery.isEmpty()){
-           tagIds.clear();
-           authors.clear();
-       }
-        else {
-           if(!authors.isEmpty() && tagIds.isEmpty()){
-               return getPaginatedPosts(postDao.findByAuthors(authors, order), start, limit);
-           } else if (authors.isEmpty() && !tagIds.isEmpty()) {
-               System.out.println(tagIds);
-               return  getPaginatedPosts(tagDao.findPostByTagIds(tagIds, order), start, limit);
-           } else if(!authors.isEmpty() && !tagIds.isEmpty()) {
-               return  getPaginatedPosts(tagDao.findPostByTagIdsAndAuthors(tagIds, authors, order), start, limit);
-           }
+                                               String searchQuery, String order, Integer start, Integer limit) {
+        List<Post> posts = new ArrayList<>();
 
-       }
+        if (!searchQuery.isEmpty()) {
+            posts = postDao.searchbyPostFields(searchQuery, order);
+            if(!authors.isEmpty() || !tagIds.isEmpty()){
+                Set<String> postIds = new HashSet<>();
 
-        return getPaginatedPosts(postDao.searchbyPostFields(searchQuery, order), start, limit);
+                for(Post post:posts){
+                    postIds.add(String.valueOf(post.getId()));
+                }
+
+                if(tagIds.isEmpty()){
+                   posts = postDao.findByAuthors(authors, order);
+                } else if (authors.isEmpty()) {
+                    posts = tagDao.findPostByTagIds(tagIds, order);
+                }
+                else {
+                    posts = tagDao.findPostByTagIdsAndAuthors(tagIds, authors, order);
+                }
+
+                List<Post> filteredPosts = new ArrayList<>();
+
+                for(Post post : posts){
+                    if(postIds.contains(post.getId())){
+                        filteredPosts.add(post);
+                    }
+                }
+
+                return filteredPosts;
+            }
+            else {
+                return  posts;
+            }
+        } else {
+            if (!authors.isEmpty() && tagIds.isEmpty()) {
+                posts = postDao.findByAuthors(authors, order);
+            } else if (authors.isEmpty() && !tagIds.isEmpty()) {
+                posts = tagDao.findPostByTagIds(tagIds, order);
+            } else if (!authors.isEmpty() && !tagIds.isEmpty()) {
+                posts = tagDao.findPostByTagIdsAndAuthors(tagIds, authors, order);
+            }
+        }
+
+        return getPaginatedPosts(posts, start, limit);
     }
 
-    public List<Post> getPaginatedPosts(List<Post> posts, Integer start, Integer limit){
+    public List<Post> getPaginatedPosts(List<Post> posts, Integer start, Integer limit) {
         int lastIndex = 1;
-        if(start >= posts.size()){
+
+        if (start >= posts.size()) {
             start = posts.size();
-             lastIndex = posts.size();
-        }
-        else if(start+limit-1 >= posts.size()){
             lastIndex = posts.size();
+        } else if (start + limit - 1 >= posts.size()) {
+            lastIndex = posts.size();
+        } else {
+            lastIndex = start + limit;
         }
-         else{
-             lastIndex = start +limit;
-         }
 
-        if(posts.isEmpty()){
-            return  null;
+        if (posts.isEmpty()) {
+            return null;
         }
-        return posts.subList(start-1, lastIndex);
+
+        return posts.subList(start - 1, lastIndex);
     }
 
-    public List<String> getAuthors(){
-         return postDao.findAllAuthors();
+    public List<String> getAuthors() {
+        return postDao.findAllAuthors();
     }
-    public Post getPostById(String id){
-        return  postDao.findById(id);
+
+    public Post getPostById(String id) {
+        return postDao.findById(id);
     }
 }
 

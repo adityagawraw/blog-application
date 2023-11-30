@@ -35,7 +35,7 @@ public class TagDaoImpl implements TagDao {
     }
 
     @Override
-    public Tag findTagFields(String field, String value){
+    public Tag findTagByField(String field, String value){
         TypedQuery<Tag> query = entityManager.createQuery("from Tag where "+field+" = :value", Tag.class);
         query.setParameter("value", value);
 
@@ -89,5 +89,11 @@ public class TagDaoImpl implements TagDao {
         }
 
         return new ArrayList<>(posts);
+    }
+
+    @Override
+    @Transactional
+    public void updateTag(Tag tag) {
+        entityManager.merge(tag);
     }
 }

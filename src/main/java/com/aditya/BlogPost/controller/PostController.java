@@ -1,7 +1,7 @@
 package com.aditya.BlogPost.controller;
 
-import com.aditya.BlogPost.dao.PostDao;
 import com.aditya.BlogPost.entity.Post;
+import com.aditya.BlogPost.entity.Tag;
 import com.aditya.BlogPost.model.CommentModel;
 import com.aditya.BlogPost.model.PostModel;
 import com.aditya.BlogPost.service.CommentService;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,37 +25,33 @@ import java.util.Objects;
 public class PostController {
     private CommentService commentService;
     private PostService postService;
-    private PostDao postDao;
     private TagService tagService;
 
     @Autowired
-    public PostController(CommentService commentService, PostService postService,
-                          PostDao postDao, TagService tagService) {
+    public PostController(CommentService commentService, PostService postService, TagService tagService) {
         this.commentService = commentService;
         this.postService = postService;
-        this.postDao = postDao;
         this.tagService = tagService;
     }
 
     @RequestMapping(value = "/")
-    public String getHome(@RequestParam(value = "author", defaultValue ="") List<String> authors,
-                          @RequestParam(value = "tagId",  defaultValue = "") List<Integer> tagIds,
-                          @RequestParam(value = "sortField", defaultValue = "publishedDate") String sortField,
-                          @RequestParam(value = "order", defaultValue = "desc") String order,
-                          @RequestParam(value = "searchQuery", defaultValue = "") String searchQuery,
-                          @RequestParam(value = "start", defaultValue = "1") Integer start,
-                          @RequestParam(value = "limit", defaultValue = "3") Integer limit,
-                          Model model){
+    public String getHomePage(@RequestParam(value = "author", defaultValue = "") List<String> authors,
+                              @RequestParam(value = "tagId", defaultValue = "") List<Integer> tagIds,
+                              @RequestParam(value = "order", defaultValue = "desc") String order,
+                              @RequestParam(value = "searchQuery", defaultValue = "") String searchQuery,
+                              @RequestParam(value = "start", defaultValue = "1") Integer start,
+                              @RequestParam(value = "limit", defaultValue = "3") Integer limit,
+                              Model model) {
         model.addAttribute("authors", postService.getAuthors());
         model.addAttribute("tags", tagService.getTags());
         model.addAttribute("order", order);
         model.addAttribute("searchQuery", searchQuery);
         model.addAttribute("start", start);
         model.addAttribute("limit", limit);
-        if(authors.isEmpty() && tagIds.isEmpty() && searchQuery.isEmpty()){
+
+        if (authors.isEmpty() && tagIds.isEmpty() && searchQuery.isEmpty()) {
             model.addAttribute("posts", postService.getPosts(order, start, limit));
-        }
-        else{
+        } else {
             model.addAttribute("posts",
                     postService.getPostOnSearchAndFilter(authors, tagIds, searchQuery, order, start, limit));
         }
@@ -66,53 +61,52 @@ public class PostController {
 
     @RequestMapping(value = "/nextPage")
     public String getNextPage(@RequestParam(value = "author", defaultValue = "") List<String> authors,
-                              @RequestParam(value = "tagId",  defaultValue = "") List<String> tagIds,
-                              @RequestParam(value = "sortField", defaultValue = "publishedDate") String sortField,
+                              @RequestParam(value = "tagId", defaultValue = "") List<String> tagIds,
                               @RequestParam(value = "order", defaultValue = "desc") String order,
                               @RequestParam(value = "searchQuery", defaultValue = "") String searchQuery,
                               @RequestParam(value = "start", defaultValue = "1") Integer start,
                               @RequestParam(value = "limit", defaultValue = "3") Integer limit,
-                              RedirectAttributes redirectAttributes){
-        start= start+limit;
-        if(!authors.isEmpty() && !tagIds.isEmpty() && !Objects.equals(searchQuery, "")) {
-            redirectAttributes.addAttribute("author",authors );
-            redirectAttributes.addAttribute("tagId",tagIds );
-            redirectAttributes.addAttribute("searchQuery",searchQuery );
+                              RedirectAttributes redirectAttributes) {
+        start = start + limit;
+
+        if (!authors.isEmpty() && !tagIds.isEmpty() && !Objects.equals(searchQuery, "")) {
+            redirectAttributes.addAttribute("author", authors);
+            redirectAttributes.addAttribute("tagId", tagIds);
+            redirectAttributes.addAttribute("searchQuery", searchQuery);
         }
-        redirectAttributes.addAttribute("sortField",sortField );
-        redirectAttributes.addAttribute("start",start );
-        redirectAttributes.addAttribute("limit",limit );
+        redirectAttributes.addAttribute("start", start);
+        redirectAttributes.addAttribute("limit", limit);
 
         return "redirect:/";
     }
 
     @RequestMapping(value = "/previousPage")
     public String getPreviousPage(@RequestParam(value = "author", defaultValue = "") List<String> authors,
-                              @RequestParam(value = "tagId",  defaultValue = "") List<String> tagIds,
-                              @RequestParam(value = "sortField", defaultValue = "publishedDate") String sortField,
-                              @RequestParam(value = "order", defaultValue = "desc") String order,
-                              @RequestParam(value = "searchQuery", defaultValue = "") String searchQuery,
-                              @RequestParam(value = "start", defaultValue = "1") Integer start,
-                              @RequestParam(value = "limit", defaultValue = "3") Integer limit,
-                                  RedirectAttributes redirectAttributes){
-       start = start - limit;
-       if(start<=0){
-           start =1;
-       }
-        if(!authors.isEmpty() && !tagIds.isEmpty() && !Objects.equals(searchQuery, "")) {
-            redirectAttributes.addAttribute("author",authors );
-            redirectAttributes.addAttribute("tagId",tagIds );
-            redirectAttributes.addAttribute("searchQuery",searchQuery );
+                                  @RequestParam(value = "tagId", defaultValue = "") List<String> tagIds,
+                                  @RequestParam(value = "order", defaultValue = "desc") String order,
+                                  @RequestParam(value = "searchQuery", defaultValue = "") String searchQuery,
+                                  @RequestParam(value = "start", defaultValue = "1") Integer start,
+                                  @RequestParam(value = "limit", defaultValue = "3") Integer limit,
+                                  RedirectAttributes redirectAttributes) {
+        start = start - limit;
+
+        if (start <= 0) {
+            start = 1;
         }
-        redirectAttributes.addAttribute("sortField",sortField );
-        redirectAttributes.addAttribute("start",start );
-        redirectAttributes.addAttribute("limit",limit );
+
+        if (!authors.isEmpty() && !tagIds.isEmpty() && !Objects.equals(searchQuery, "")) {
+            redirectAttributes.addAttribute("author", authors);
+            redirectAttributes.addAttribute("tagId", tagIds);
+            redirectAttributes.addAttribute("searchQuery", searchQuery);
+        }
+        redirectAttributes.addAttribute("start", start);
+        redirectAttributes.addAttribute("limit", limit);
 
         return "redirect:/";
     }
 
     @RequestMapping(value = "/post")
-    public String getPost(@RequestParam("postId") String id, Model model) {
+    public String getPostPage(@RequestParam("postId") String id, Model model) {
         Post post = postService.getPostById(id);
         model.addAttribute("post", post);
         model.addAttribute("comment", new CommentModel());
@@ -122,19 +116,27 @@ public class PostController {
     }
 
     @RequestMapping(value = "/editPost")
-    public String editPostPage(@RequestParam(value = "postId") String id, Model model, Principal principal) {
+    public String getEditPostPage(@RequestParam(value = "postId") String id, Model model, Principal principal) {
         Post post = postService.getPostById(id);
-        if(!Objects.equals(post.getAuthor(), principal.getName())){
-            return "redirect:/post?postId="+id;
+        if (!Objects.equals(post.getAuthor(), principal.getName())) {
+            return "redirect:/post?postId=" + id;
         }
+
+        String tagsStr = "";
+        for(Tag tag: post.getTags()){
+            tagsStr +=tag.getName()+",";
+        }
+
+        model.addAttribute("tagsStr", tagsStr);
         model.addAttribute("post", post);
 
         return "editPost";
     }
 
     @RequestMapping(value = "/updatePost")
-    public String processUpdate(@ModelAttribute("post") Post post, Model model) {
-        postService.updatePostById(String.valueOf(post.getId()), post);
+    public String processUpdate(@ModelAttribute("post") Post post, @ModelAttribute("tagsStr") String tags, Model model) {
+        String[] tagArr = tags.split(",");
+        postService.updatePostById(String.valueOf(post.getId()), tagArr, post);
 
         return "redirect:/post?postId=" + post.getId();
     }
@@ -142,8 +144,8 @@ public class PostController {
     @RequestMapping(value = "/deletePost")
     public String deletePost(@RequestParam(value = "postId") String id, Principal principal) {
         Post post = postService.getPostById(id);
-        if(!Objects.equals(post.getAuthor(), principal.getName())){
-            return "redirect:/post?postId="+id;
+        if (!Objects.equals(post.getAuthor(), principal.getName())) {
+            return "redirect:/post?postId=" + id;
         }
         postService.deletePostById(id);
 
@@ -151,7 +153,7 @@ public class PostController {
     }
 
     @RequestMapping(value = "/newPost")
-    public String getHomePage(Model model, Principal principal) {
+    public String getAddPostPage(Model model, Principal principal) {
         model.addAttribute("post", new PostModel());
         return "writePost";
     }

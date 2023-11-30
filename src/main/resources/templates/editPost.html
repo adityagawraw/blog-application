@@ -13,7 +13,7 @@
 
 <form th:action="@{/updatePost}" modelAttribute = "post" th:object="${post}" method="post">
     <input type="text" placeholder="Title" th:name ="title" th:field ="*{title}">
-<!--    <input type="text" placeholder="Tags" th:name ="tags" th:field ="*{tags}" th:value="*{tags.tag.name}">-->
+    <input type="text" placeholder="Tags" th:name ="tagsStr" th:value="${tagsStr}">
     <textarea placeholder="Write your blog..." rows="10" th:name ="blogContent" th:field ="*{content}"></textarea>
     <input type="hidden" th:field ="*{id}" th:value="*{id}">
     <div>

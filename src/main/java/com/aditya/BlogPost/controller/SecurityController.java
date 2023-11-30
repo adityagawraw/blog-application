@@ -15,12 +15,12 @@ public class SecurityController {
     }
 
     @GetMapping("/login")
-    public String getLogin() {
+    public String getLoginPage() {
         return "login";
     }
 
     @GetMapping("/register")
-    public String getRegister() {
+    public String getRegisterPage() {
         return "register";
     }
 

@@ -4,6 +4,7 @@ import com.aditya.BlogPost.entity.Comment;
 import com.aditya.BlogPost.entity.Post;
 import com.aditya.BlogPost.model.CommentModel;
 import com.aditya.BlogPost.service.CommentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,39 +16,41 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class CommentController {
     private CommentService commentService;
 
+    @Autowired
     public CommentController(CommentService commentService) {
         this.commentService = commentService;
     }
 
     @RequestMapping(value = "/addComment", method = RequestMethod.POST)
-    public String addComment(@ModelAttribute("comment") CommentModel comment){
+    public String addComment(@ModelAttribute("comment") CommentModel comment) {
         commentService.addComment(comment);
 
-        return "redirect:/post?postId="+comment.getPostId();
+        return "redirect:/post?postId=" + comment.getPostId();
     }
+
     @RequestMapping(value = "/deleteComment", method = RequestMethod.POST)
-    public String deleteComment(@RequestParam("commentId") String commentId, @RequestParam("postId") String postId){
+    public String deleteComment(@RequestParam("commentId") String commentId, @RequestParam("postId") String postId) {
         commentService.deleteComment(commentId);
 
-        return "redirect:/post?postId="+postId;
+        return "redirect:/post?postId=" + postId;
     }
 
     @RequestMapping(value = "/updateComment", method = RequestMethod.POST)
-    public String getUpdateComment(@RequestParam("commentId") String commentId,
-                                   @RequestParam("postId") String postId, Model model){
+    public String getUpdateCommentPage(@RequestParam("commentId") String commentId,
+                                   @RequestParam("postId") String postId, Model model) {
         model.addAttribute("comment", commentService.getCommentbyId(commentId));
         model.addAttribute("postId", postId);
 
         return "updateComment";
     }
 
-    @RequestMapping(value = "/porcessUpdateComment", method = RequestMethod.POST)
+    @RequestMapping(value = "/processUpdateComment", method = RequestMethod.POST)
     public String processUpdateComment(@RequestParam("updatedComment") String updatedComment,
                                        @RequestParam("commentId") String commentId,
                                        @RequestParam("postId") String postId,
-                                       Model model){
+                                       Model model) {
         commentService.updateCommentById(commentId, updatedComment);
 
-        return "redirect:/post?postId="+postId;
+        return "redirect:/post?postId=" + postId;
     }
 }

@@ -61,4 +61,11 @@ public class PostRestController {
         return  "Post created successfully!!";
     }
 
+    @PostMapping("updatePost")
+    public String updatePost(@RequestBody Post post, @RequestBody String[] tagArr){
+        postService.updatePostById(String.valueOf(post.getId()), tagArr, post);
+
+        return  "Post updated successfully!!";
+    }
+
 }

@@ -25,7 +25,7 @@
 </header>
 <section>
     <form id="search-section" th:action="@{/}">
-        <input id="search" type="text" placeholder="Search" th:name="searchQuery">
+        <input id="search" type="text" placeholder="Search" th:name="searchQuery" th:value="${searchQuery}">
         <button type="submit">Search</button>
         <div>
             <span>Sort By: </span><select th:name="order">

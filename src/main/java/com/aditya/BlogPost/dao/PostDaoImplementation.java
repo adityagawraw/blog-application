@@ -1,9 +1,11 @@
 package com.aditya.BlogPost.dao;
 
 import com.aditya.BlogPost.entity.Post;
+import com.aditya.BlogPost.entity.Tag;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -13,9 +15,12 @@ import java.util.List;
 @Repository
 public class PostDaoImplementation implements PostDao {
     private EntityManager entityManager;
+    private TagDao tagDao;
 
-    public PostDaoImplementation(EntityManager entityManager) {
+    @Autowired
+    public PostDaoImplementation(EntityManager entityManager, TagDao tagDao) {
         this.entityManager = entityManager;
+        this.tagDao = tagDao;
     }
 
     @Override
@@ -40,12 +45,30 @@ public class PostDaoImplementation implements PostDao {
 
     @Override
     @Transactional
-    public void updateById(int id, String title, String content) {
+    public void updateById(int id, String title, String content, String[] tagArr) {
         Post post = entityManager.find(Post.class, id);
-        System.out.println(post);
         post.setTitle(title);
         post.setContent(content);
         post.setUpdatedAt(String.valueOf(new Date()));
+        List<Tag> tags = post.getTags();
+
+        for(int index = 0; index < tagArr.length;index++){
+            Tag tag = new Tag();
+            System.out.println(tagArr[index]);
+            if(index < tags.size()){
+                tag = tags.get(index);
+                tag.setName(tagArr[index]);
+                tag.setUpdatedAt(String.valueOf(new Date()));
+                tagDao.updateTag(tag);
+            }
+            else{
+                tag.setName(tagArr[index]);
+                tag.setCreatedAt(String.valueOf(new Date()));
+                tag.setUpdatedAt(String.valueOf(new Date()));
+                tagDao.save(tag);
+                post.addTag(tag);
+            }
+        }
 
         entityManager.merge(post);
     }
@@ -55,14 +78,6 @@ public class PostDaoImplementation implements PostDao {
     public void deleteById(String id) {
         Post post = entityManager.find(Post.class, Integer.parseInt(id));
         entityManager.remove(post);
-    }
-
-    @Override
-    @Transactional
-    public List<Post> sortByNewest() {
-        TypedQuery<Post> query = entityManager.createQuery("FROM Post ORDER BY id DESC", Post.class);
-
-        return query.getResultList();
     }
 
     @Override
@@ -93,25 +108,7 @@ public class PostDaoImplementation implements PostDao {
                 entityManager.createQuery("from Post where author in :authors order by id "+order, Post.class);
         query.setParameter("authors", authors);
         List<Post> posts = query.getResultList();
-        System.out.println("authors"+authors);
-        System.out.println(posts);
+
         return posts;
     }
-
-    @Override
-    public List<Post> findByTags(List<String> tags, String order) {
-        TypedQuery<Post> query=
-                entityManager.createQuery("from Post where author in :authors order by id "+order, Post.class);
-        query.setParameter("authors", tags);
-        List<Post> posts = query.getResultList();
-
-        return null;
-    }
-
-    @Override
-    public List<Post> findByAuthorsAndTags(List<String> authors, List<String> tags, String order) {
-        return null;
-    }
-
-
 }
