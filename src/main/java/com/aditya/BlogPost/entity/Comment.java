@@ -1,5 +1,6 @@
 package com.aditya.BlogPost.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -22,6 +23,7 @@ public class Comment {
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
     @JoinColumn(name = "post_id")
+    @JsonIgnore
     private  Post post;
 
     public int getId() {

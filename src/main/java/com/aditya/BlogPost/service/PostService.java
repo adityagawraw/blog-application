@@ -114,5 +114,8 @@ public class PostService {
     public List<String> getAuthors(){
          return postDao.findAllAuthors();
     }
+    public Post getPostById(String id){
+        return  postDao.findById(id);
+    }
 }
 

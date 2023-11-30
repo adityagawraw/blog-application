@@ -1,5 +1,6 @@
 package com.aditya.BlogPost.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class Tag {
                name = "posts_tags",
                joinColumns = @JoinColumn(name = "tag_id"),
                inverseJoinColumns = @JoinColumn(name = "post_id"))
+    @JsonIgnore
     private List<Post> posts;
 
 

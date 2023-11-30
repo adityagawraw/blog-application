@@ -113,7 +113,7 @@ public class PostController {
 
     @RequestMapping(value = "/post")
     public String getPost(@RequestParam("postId") String id, Model model) {
-        Post post = postDao.findById(id);
+        Post post = postService.getPostById(id);
         model.addAttribute("post", post);
         model.addAttribute("comment", new CommentModel());
         model.addAttribute("comments", post.getCommentList());
@@ -123,7 +123,7 @@ public class PostController {
 
     @RequestMapping(value = "/editPost")
     public String editPostPage(@RequestParam(value = "postId") String id, Model model, Principal principal) {
-        Post post = postDao.findById(id);
+        Post post = postService.getPostById(id);
         if(!Objects.equals(post.getAuthor(), principal.getName())){
             return "redirect:/post?postId="+id;
         }
@@ -141,7 +141,7 @@ public class PostController {
 
     @RequestMapping(value = "/deletePost")
     public String deletePost(@RequestParam(value = "postId") String id, Principal principal) {
-        Post post = postDao.findById(id);
+        Post post = postService.getPostById(id);
         if(!Objects.equals(post.getAuthor(), principal.getName())){
             return "redirect:/post?postId="+id;
         }
@@ -152,7 +152,6 @@ public class PostController {
 
     @RequestMapping(value = "/newPost")
     public String getHomePage(Model model, Principal principal) {
-        System.out.println(principal.getName());
         model.addAttribute("post", new PostModel());
         return "writePost";
     }
