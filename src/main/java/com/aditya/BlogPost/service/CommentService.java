@@ -15,26 +15,31 @@ public class CommentService {
         this.commentDao = commentDao;
     }
 
-    public  void addComment(CommentModel commentModel){
-        Comment commentEntity = new Comment();
-        commentEntity.setName(commentModel.getName());
-        commentEntity.setEmail(commentModel.getEmail());
-        commentEntity.setComment(commentModel.getComment());
-        commentEntity.setCreatedAt(String.valueOf(new Date()));
-        commentEntity.setUpdatedAt(String.valueOf(new Date()));
+    public void addComment(CommentModel commentModel) {
+        Comment comment = new Comment();
+        comment.setName(commentModel.getName());
+        comment.setEmail(commentModel.getEmail());
+        comment.setComment(commentModel.getComment());
+        comment.setCreatedAt(String.valueOf(new Date()));
+        comment.setUpdatedAt(String.valueOf(new Date()));
 
-        commentDao.save(commentEntity, commentModel.getPostId());
+        commentDao.save(comment, commentModel.getPostId());
     }
-    public void deleteComment(String commentId){
+
+    public void deleteComment(String commentId) {
         commentDao.delete(commentId);
     }
-    public Comment getCommentbyId(String commentId){
-        Comment comment = commentDao.findById(commentId);
 
-        return comment;
+    public Comment getCommentbyId(String commentId) {
+        return commentDao.findById(commentId);
     }
 
-    public  void updateCommentById(String commentId, String updatedComment){
-        commentDao.updateById(commentId, updatedComment);
+    public void updateCommentById(String commentId, String updatedComment) {
+        Comment comment = new Comment();
+        comment = commentDao.findById(commentId);
+        comment.setComment(updatedComment);
+        comment.setUpdatedAt(String.valueOf(new Date()));
+
+        commentDao.updateById(comment);
     }
 }

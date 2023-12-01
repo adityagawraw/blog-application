@@ -37,7 +37,7 @@ public class CommentController {
 
     @RequestMapping(value = "/updateComment", method = RequestMethod.POST)
     public String getUpdateCommentPage(@RequestParam("commentId") String commentId,
-                                   @RequestParam("postId") String postId, Model model) {
+                                       @RequestParam("postId") String postId, Model model) {
         model.addAttribute("comment", commentService.getCommentbyId(commentId));
         model.addAttribute("postId", postId);
 
